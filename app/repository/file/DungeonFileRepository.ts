@@ -8,7 +8,8 @@ export class DungeonFileRepository implements IDungeonRepository {
 
     Get(name:string): Dungeon {
         const filtered = this.List()
-            .filter(d => d.name == name || d.aliases.includes(name));
+            .filter(d => d.name.toLowerCase() === name.toLowerCase() ||
+                d.aliases.find(a => a.toLowerCase() === name.toLowerCase()));
 
         if (!filtered || !filtered.length) {
             throw "Dungeon not found";

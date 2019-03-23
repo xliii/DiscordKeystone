@@ -1,6 +1,7 @@
 .env
 node_modules/
-app.js
+build/
 .idea/
 *.iml
 data/keystones.json
+npm-debug.log

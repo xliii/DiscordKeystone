@@ -3,4 +3,4 @@ node_modules/
 app.js
 .idea/
 *.iml
-storage/
+data/keystones.json

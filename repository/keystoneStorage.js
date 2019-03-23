@@ -21,7 +21,7 @@ function KeystoneStorage() {
     this.Add = function(user, keystone) {
         var keystones = read();
         keystones[user] = keystone;
-        write(JSON.stringify(keystones));
+        write(keystones);
     };
 
 
@@ -35,12 +35,13 @@ function KeystoneStorage() {
         var keystone = this.Get(user);
         if (keystone) {
             delete keystones[user];
-            write(JSON.stringify(keystones));
+            write(keystones);
         }
         return keystone;
     };
 
-    var write = function(data) {
+    var write = function(obj) {
+        var data = obj != null ? JSON.stringify(obj, null, 2) : '{}';
         fs.writeFile(PATH, data, "utf8", callback);
     };
 

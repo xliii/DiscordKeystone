@@ -1,4 +1,4 @@
-var storage = require('../data/keystoneStorage');
+var storage = require('../repository/keystoneStorage');
 
 module.exports = function(args) {
     var keystones = storage.List();

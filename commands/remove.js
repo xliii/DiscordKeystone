@@ -1,4 +1,4 @@
-var keystones = require('../data/keystoneStorage');
+var keystones = require('../repository/keystoneStorage');
 
 module.exports = function(args) {
     if (args.length !== 1) {

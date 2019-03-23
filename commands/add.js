@@ -1,5 +1,5 @@
-var keystoneStorage = require('../data/keystoneStorage');
-var dungeonStorage = require('../data/dungeonStorage');
+var keystoneStorage = require('../repository/keystoneStorage');
+var dungeonStorage = require('../repository/dungeonStorage');
 var Keystone = require('./../model/keystone');
 
 module.exports = function(args) {

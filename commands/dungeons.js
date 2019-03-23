@@ -1,4 +1,4 @@
-var dungeons = require('./../data/dungeonStorage').List();
+var dungeons = require('../repository/dungeonStorage').List();
 
 module.exports = function(args) {
     return "Available dungeons: \n" + dungeons

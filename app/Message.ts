@@ -11,7 +11,7 @@ module.exports = function(client:Client, message:Message): void {
     console.log("< " + message);
 
     if (parts.length < 2) {
-        message.channel.send("Please specify command: **" + message + " [command]**");
+        message.channel.send(`Please specify command: **${message} [command]**`);
         return;
     }
 
@@ -24,14 +24,14 @@ module.exports = function(client:Client, message:Message): void {
             const handler = require('./command/' + commandName);
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
-                const response:any = handler(args);
+                const response:any = handler(args, client, message);
                 message.channel.send(response);
                 matched = true;
            }
         });
 
         if (!matched) {
-            message.channel.send("Unknown command: **" + message + "**");
+            message.channel.send(`Unknown command: **${message}**`);
         }
     });
 };

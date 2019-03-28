@@ -10,6 +10,7 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
 
     Add(entry: KeystoneEntry): void {
         let entries: KeystoneEntry[] = this.List();
+        entries = entries.filter(k => k.user !== entry.user);
         entries.push(entry);
         this.write(entries);
     }
@@ -19,8 +20,10 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
     }
 
     List(): KeystoneEntry[] {
-        return JSON.parse(fs.readFileSync(KeystoneEntryFileRepository.PATH, "utf8"))
-            .map((o:any) => KeystoneEntry.fromJSON(o));
+        return fs.existsSync(KeystoneEntryFileRepository.PATH) ?
+            JSON.parse(fs.readFileSync(KeystoneEntryFileRepository.PATH, "utf8"))
+                .map((o:any) => KeystoneEntry.fromJSON(o)) :
+            [];
     }
 
     Remove(user: string): Keystone | undefined {

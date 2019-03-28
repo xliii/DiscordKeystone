@@ -9,6 +9,6 @@ module.exports = function(args: string[]): any {
     let repository = new KeystoneEntryFileRepository();
     let keystone = repository.Remove(user);
     return keystone ?
-        "**" + keystone + "** removed from **" + user + "**" :
-        "No keystone found for **" + user + "**";
+        `**${keystone}** removed from **${user}**` :
+        `No keystone found for **${user}**`;
 };

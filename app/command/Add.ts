@@ -20,7 +20,7 @@ module.exports = function(args: string[]): any {
         let keystone: Keystone = new Keystone(dungeon, key);
         let entry: KeystoneEntry = new KeystoneEntry(username, keystone);
         entryRepo.Add(entry);
-        return "**" + keystone + "** added to **" + username + "**";
+        return `**${keystone}** added to **${username}**`;
     } catch (e) {
         return e;
     }

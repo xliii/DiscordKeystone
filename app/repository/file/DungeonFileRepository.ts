@@ -18,7 +18,9 @@ export class DungeonFileRepository implements IDungeonRepository {
     }
 
     List(): Dungeon[] {
-        return JSON.parse(fs.readFileSync(DungeonFileRepository.PATH, "utf8"))
-            .map((o:any) => Dungeon.fromJSON(o));
+        return fs.existsSync(DungeonFileRepository.PATH) ?
+            JSON.parse(fs.readFileSync(DungeonFileRepository.PATH, "utf8"))
+                .map((o:any) => Dungeon.fromJSON(o)) :
+            [];
     }
 }

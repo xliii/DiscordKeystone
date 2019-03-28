@@ -1,7 +1,8 @@
 import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
 import {Dungeon} from "../model/Dungeon";
+import {StringResolvable} from "discord.js";
 
-module.exports = function(args: string[]): any {
+module.exports = function(args: string[]): StringResolvable {
     let repository = new DungeonFileRepository();
     let dungeons:Dungeon[] = repository.List();
 

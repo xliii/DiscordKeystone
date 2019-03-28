@@ -1,6 +1,6 @@
 import fs = require('fs');
 
-import {Client, Message} from "discord.js"
+import {Client, Message, StringResolvable} from "discord.js"
 
 module.exports = function(client:Client, message:Message): void {
     const parts = message.content.split(' ');
@@ -24,7 +24,12 @@ module.exports = function(client:Client, message:Message): void {
             const handler = require('./command/' + commandName);
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
-                const response:any = handler(args, client, message);
+                let response: StringResolvable;
+                try {
+                    response = handler(args, message);
+                } catch (e) {
+                    response = e;
+                }
                 message.channel.send(response);
                 matched = true;
            }

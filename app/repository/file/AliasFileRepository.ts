@@ -41,4 +41,14 @@ export class AliasFileRepository implements IAliasRepository {
         }
     }
 
+    Remove(discordId: string): Alias | undefined {
+        let aliases: Alias[] = this.List();
+        let alias: any = aliases.find(a => a.discordId === discordId);
+        if (alias) {
+            aliases = aliases.filter(a => a.discordId !== discordId);
+            this.write(aliases);
+            return alias;
+        }
+        return undefined;
+    }
 }

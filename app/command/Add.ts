@@ -3,26 +3,47 @@ import {Dungeon} from "../model/Dungeon";
 import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
 import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
 import {KeystoneEntry} from "../model/KeystoneEntry";
+import {Message, StringResolvable} from "discord.js";
+import {AliasFileRepository} from "../repository/file/AliasFileRepository";
 
-module.exports = function(args: string[]): any {
-    if (args.length !== 3) {
-        return "Usage: **/keys add [character] [dungeon] [key]**";
+module.exports = function(args: string[], message:Message): StringResolvable {
+
+    const usage = "Usage: **/keys add {character} [dungeon] [key]**";
+
+    if (args.length < 2) {
+        return usage;
     }
 
-    let username: string = args[0];
-    let dungeonName: string = args[1];
-    let key: number = parseInt(args[2]);
+    switch (args.length) {
+        case 2: return addAlias(args, message);
+        case 3: return addExplicit(args);
+        default: return usage;
+    }
 
-    let dungeonRepo = new DungeonFileRepository();
-    let entryRepo = new KeystoneEntryFileRepository();
-    try {
-        let dungeon: Dungeon = dungeonRepo.Get(dungeonName);
-        let keystone: Keystone = new Keystone(dungeon, key);
-        let entry: KeystoneEntry = new KeystoneEntry(username, keystone);
+    function addAlias(args: string[], message: Message): StringResolvable {
+        const dungeonName: string = args[0];
+        const key: number = parseInt(args[1]);
+        const discordId: string = message.author.id;
+
+        const aliasRepo = new AliasFileRepository();
+        const alias = aliasRepo.Get(discordId);
+        return addKeystone(alias.character, dungeonName, key);
+    }
+
+    function addExplicit(args: string[]): StringResolvable {
+        const character: string = args[0];
+        const dungeonName: string = args[1];
+        const key: number = parseInt(args[2]);
+        return addKeystone(character, dungeonName, key);
+    }
+    
+    function addKeystone(character:string, dungeonName:string, key:number): StringResolvable {
+        const dungeonRepo = new DungeonFileRepository();
+        const entryRepo = new KeystoneEntryFileRepository();
+        const dungeon: Dungeon = dungeonRepo.Get(dungeonName);
+        const keystone: Keystone = new Keystone(dungeon, key);
+        const entry: KeystoneEntry = new KeystoneEntry(character, keystone);
         entryRepo.Add(entry);
-        return `**${keystone}** added to **${username}**`;
-    } catch (e) {
-        return e;
+        return `**${keystone}** added to **${character}**`;
     }
-
 };

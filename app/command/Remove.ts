@@ -1,6 +1,7 @@
 import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import {StringResolvable} from "discord.js";
 
-module.exports = function(args: string[]): any {
+module.exports = function(args: string[]): StringResolvable {
     if (args.length !== 1) {
         return "Usage: **/keys remove [character]**";
     }

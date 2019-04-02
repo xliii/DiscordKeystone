@@ -1,5 +1,6 @@
 import Discord = require("discord.js");
 const client = new Discord.Client();
+require("dotenv").config();
 
 const messageHandler = require("./Message");
 
@@ -8,9 +9,10 @@ client.on("ready", () => {
 });
 
 client.on("message", message => messageHandler(client, message));
+client.on("error", console.error);
 
-client.login("NTU4MjU3MDU5Mjc2MTI4MjU3.D3UM_A.2LYCAw7KdqjLf2oX-xXsvOtRKek").then(value => {
-    console.log(value);
+client.login(process.env.BOT_TOKEN).then(() => {
+    console.log("Bot started");
 }).catch(err => {
-    console.error(err);
+    console.error("Bot could not login", err);
 });

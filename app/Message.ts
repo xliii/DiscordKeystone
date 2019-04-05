@@ -8,7 +8,7 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    console.log("< " + message);
+    console.log(`< ${message}`);
 
     if (parts.length < 2) {
         message.channel.send(`Please specify command: **${message} [command]**`);
@@ -24,13 +24,9 @@ module.exports = function(client:Client, message:Message): void {
             const handler = require('./command/' + commandName);
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
-                let response: StringResolvable;
-                try {
-                    response = handler(args, message);
-                } catch (e) {
-                    response = e;
-                }
-                message.channel.send(response);
+                Promise.resolve(handler(args, message)).then((value:StringResolvable) => {
+                    message.channel.send(value);
+                });
                 matched = true;
            }
         });

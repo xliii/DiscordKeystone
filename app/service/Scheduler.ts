@@ -1,7 +1,7 @@
 import {Job, scheduleJob} from "node-schedule";
 import {StringResolvable, TextChannel} from "discord.js";
-import {KeystoneEntryFileRepository} from "./repository/file/KeystoneEntryFileRepository";
-import {IKeystoneEntryRepository} from "./repository/IKeystoneEntryRepository";
+import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
 
 export class Scheduler {
 
@@ -14,10 +14,10 @@ export class Scheduler {
     constructor(channel:TextChannel) {
         this.channel = channel;
         this.entryRepo = new KeystoneEntryFileRepository();
-        this.affixesRequest = require('./command/Affixes');
+        this.affixesRequest = require('../command/Affixes');
     }
 
-    public scheduleReset():void {
+    public scheduleWeeklyReset():void {
         this.scheduleJob = scheduleJob("0 0 10 * * 3", () => {
             this.affixesRequest().then(affixes => {
                 this.entryRepo.Clear();

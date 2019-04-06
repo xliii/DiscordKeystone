@@ -1,8 +1,9 @@
-import {Client, Message, StringResolvable} from "discord.js";
+import {Message, StringResolvable} from "discord.js";
 import {AliasFileRepository} from "../repository/file/AliasFileRepository";
 import {Alias} from "../model/Alias";
+import {AliasService} from "../service/AliasService";
 
-module.exports = function(args: string[], message: Message, client: Client): StringResolvable {
+module.exports = function(args: string[], message: Message): StringResolvable {
     const usage = ["**Usage:**",
         "/keys alias set [character]",
         "/keys alias get",
@@ -18,7 +19,7 @@ module.exports = function(args: string[], message: Message, client: Client): Str
         case "set": return set(message, args.slice(1));
         case "get": return get(message);
         case "remove": return remove(message);
-        case "list": return list(client);
+        case "list": return list();
         default: return usage;
     }
 
@@ -39,18 +40,12 @@ function set(message: Message, args: string[]): StringResolvable {
 }
 
 function get(message: Message): StringResolvable {
-    const discordId: string = message.author.id;
-    const discordName: string = message.author.username;
-    const repository = new AliasFileRepository();
-    try {
-        const alias = repository.Get(discordId);
-        return `**${discordName}**'s alias is **${alias.character}**`;
-    } catch (e) {
-        throw `No alias found for **${discordName}**`;
-    }
+    let service = new AliasService();
+    let character = service.extractAlias(message);
+    return `**${message.author.username}**'s alias is **${character}**`;
 }
 
-function list(client: Client): StringResolvable {
+function list(): StringResolvable {
     const repository = new AliasFileRepository();
     const aliases: Alias[] = repository.List();
 
@@ -65,6 +60,6 @@ function remove(message: Message): StringResolvable {
     const discordName: string = message.author.username;
     let alias: any = repository.Remove(discordId);
     return alias ?
-        `Alias **${alias.character}** added for **${discordName}**` :
+        `Alias **${alias.character}** removed from **${discordName}**` :
         `No alias found for **${discordName}`;
 }

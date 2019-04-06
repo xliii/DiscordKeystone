@@ -1,5 +1,5 @@
 import Discord = require("discord.js");
-import {Scheduler} from "./Scheduler";
+import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
 
 const client = new Discord.Client();
@@ -25,7 +25,7 @@ client.login(process.env.BOT_TOKEN).then(() => {
 
     const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
     const scheduler = new Scheduler(channel);
-    scheduler.scheduleReset();
+    scheduler.scheduleWeeklyReset();
 }).catch(err => {
     console.error("Bot could not login", err);
 });

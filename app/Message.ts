@@ -24,15 +24,18 @@ module.exports = function(client:Client, message:Message): void {
             const handler = require('./command/' + commandName);
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
-                Promise.resolve(handler(args, message)).then((value:StringResolvable) => {
-                    message.channel.send(value);
+                Promise.resolve(handler(args, message)).then((response:StringResolvable) => {
+                    console.log(`> ${response}`);
+                    message.channel.send(response);
                 });
                 matched = true;
            }
         });
 
         if (!matched) {
-            message.channel.send(`Unknown command: **${message}**`);
+            let response = `Unknown command: **${message}**`;
+            console.log(`> ${response}`);
+            message.channel.send(response);
         }
     });
 };

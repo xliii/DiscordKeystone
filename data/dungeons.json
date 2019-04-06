@@ -1,23 +1,27 @@
 [
   {
+    "id": 1,
     "name": "Atal'Dazar",
     "aliases": [
       "AD"
     ]
   },
   {
+    "id": 2,
     "name": "Freehold",
     "aliases": [
       "FH"
     ]
   },
   {
+    "id": 249,
     "name": "Kings Rest",
     "aliases": [
       "KR"
     ]
   },
   {
+    "id": 247,
     "name": "Motherlode",
     "aliases": [
       "ML",
@@ -25,6 +29,7 @@
     ]
   },
   {
+    "id": 252,
     "name": "Shrine of the Storm",
     "aliases": [
       "SOTS",
@@ -32,6 +37,7 @@
     ]
   },
   {
+    "id": 353,
     "name": "Siege of Boralus",
     "aliases": [
       "SOB",
@@ -40,6 +46,7 @@
     ]
   },
   {
+    "id": 250,
     "name": "Temple of Sethraliss",
     "aliases": [
       "TOS",
@@ -48,6 +55,7 @@
     ]
   },
   {
+    "id": 4,
     "name": "Tol Dagor",
     "aliases": [
       "TD",
@@ -55,12 +63,14 @@
     ]
   },
   {
+    "id": 5,
     "name": "Underrot",
     "aliases": [
       "UR"
     ]
   },
   {
+    "id": 248,
     "name": "Waycrest Manor",
     "aliases": [
       "WM",

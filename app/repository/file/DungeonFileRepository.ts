@@ -6,7 +6,18 @@ export class DungeonFileRepository implements IDungeonRepository {
 
     private static PATH:string = "./data/dungeons.json";
 
-    Get(name:string): Dungeon {
+    //TODO: Fix dungeon IDs
+    Get(id: number): Dungeon {
+        const filtered = this.List()
+            .filter(d => d.id == id);
+
+        if (!filtered || !filtered.length) {
+            throw "Dungeon not found";
+        }
+        return filtered[0];
+    }
+
+    GetByName(name:string): Dungeon {
         const filtered = this.List()
             .filter(d => d.name.toLowerCase() === name.toLowerCase() ||
                 d.aliases.find(a => a.toLowerCase() === name.toLowerCase()));

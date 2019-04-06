@@ -5,6 +5,7 @@ import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileR
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Message, StringResolvable} from "discord.js";
 import {AliasFileRepository} from "../repository/file/AliasFileRepository";
+import {Character} from "../model/Character";
 
 module.exports = function(args: string[], message:Message): StringResolvable {
 
@@ -42,7 +43,7 @@ module.exports = function(args: string[], message:Message): StringResolvable {
         const entryRepo = new KeystoneEntryFileRepository();
         const dungeon: Dungeon = dungeonRepo.GetByName(dungeonName);
         const keystone: Keystone = new Keystone(dungeon, key);
-        const entry: KeystoneEntry = new KeystoneEntry(character, keystone);
+        const entry: KeystoneEntry = new KeystoneEntry(new Character(character), keystone);
         entryRepo.Add(entry);
         return `**${keystone}** added to **${character}**`;
     }

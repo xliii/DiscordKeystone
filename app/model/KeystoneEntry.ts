@@ -1,19 +1,20 @@
 import {Keystone} from "./Keystone";
+import {Character} from "./Character";
 
 export class KeystoneEntry {
-    user: string;
+    character: Character;
     keystone: Keystone;
 
-    constructor(user: string, keystone: Keystone) {
-        this.user = user;
+    constructor(character: Character, keystone: Keystone) {
+        this.character = character;
         this.keystone = keystone;
     }
 
     toString():string {
-        return `**${this.user}**: ${this.keystone}`;
+        return `**${this.character}**: ${this.keystone}`;
     }
 
     public static fromJSON(obj: any): KeystoneEntry {
-        return new KeystoneEntry(obj["user"], Keystone.fromJSON(obj["keystone"]));
+        return new KeystoneEntry(Character.fromJSON(obj["character"]), Keystone.fromJSON(obj["keystone"]));
     }
 }

@@ -5,6 +5,8 @@ import {Keystone} from "../model/Keystone";
 import {IDungeonRepository} from "../repository/IDungeonRepository";
 import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
 import {Dungeon} from "../model/Dungeon";
+import {Character} from "../model/Character";
+import {defaultRealm} from "../model/Settings";
 
 export class SavedVariablesTracker {
 
@@ -32,7 +34,8 @@ export class SavedVariablesTracker {
         let keystones = keystoneSection.split(',')
             .map(entry => entry.trim())
             .filter(entry => entry.length > 0)
-            .map(entry => this.parseEntry(entry));
+            .map(entry => this.parseEntry(entry))
+            .filter(entry => entry.character.realm === defaultRealm());
         console.log(keystones);
     }
 
@@ -48,6 +51,6 @@ export class SavedVariablesTracker {
         const key = parseInt(match[4]);
 
         const dungeon:Dungeon = this.dungeonRepo.Get(dungeonId);
-        return new KeystoneEntry(character, new Keystone(dungeon, key));
+        return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key));
     }
 }

@@ -10,7 +10,7 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
 
     Add(entry: KeystoneEntry): void {
         let entries: KeystoneEntry[] = this.List();
-        entries = entries.filter(k => k.user !== entry.user);
+        entries = entries.filter(k => k.character !== entry.character);
         entries.push(entry);
         this.write(entries);
     }
@@ -26,11 +26,11 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
             [];
     }
 
-    Remove(user: string): Keystone | undefined {
+    Remove(character: string): Keystone | undefined {
         let entries: KeystoneEntry[] = this.List();
-        let entry: any = entries.find(k => k.user === user);
+        let entry: any = entries.find(k => k.character.name === character);
         if (entry) {
-            entries = entries.filter(k => k.user !== user);
+            entries = entries.filter(k => k.character.name !== character);
             this.write(entries);
             return entry.keystone;
         }

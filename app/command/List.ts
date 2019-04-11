@@ -2,17 +2,17 @@ import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileR
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {StringResolvable} from "discord.js";
 
-module.exports = function(args: string[]): StringResolvable {
+module.exports = function(args: string[]): Promise<StringResolvable> {
     const BY_KEY = "bykey";
     const BY_DUNGEON = "bydungeon";
     const DEFAULT_SORTING = byDungeon;
 
     const repository = new KeystoneEntryFileRepository();
-    const keystones:KeystoneEntry[] = repository.List();
-
-    return keystones.length > 0 ?
-        keystones.sort(getSorting(args)) :
-        "No keystones available";
+    return repository.List().then(keystones => {
+        return keystones.length > 0 ?
+            keystones.sort(getSorting(args)) :
+            "No keystones available";
+    });
 
     function byKey(a: KeystoneEntry, b: KeystoneEntry): number {
         return a.keystone.key - b.keystone.key;

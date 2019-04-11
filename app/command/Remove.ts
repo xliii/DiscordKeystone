@@ -8,8 +8,9 @@ module.exports = function(args: string[]): StringResolvable {
 
     let user:string = args[0];
     let repository = new KeystoneEntryFileRepository();
-    let keystone = repository.Remove(user);
-    return keystone ?
-        `**${keystone}** removed from **${user}**` :
-        `No keystone found for **${user}**`;
+    return repository.Remove(user).then(keystone => {
+        return keystone ?
+            `**${keystone.keystone}** removed from **${user}**` :
+            `No keystone found for **${user}**`;
+    });
 };

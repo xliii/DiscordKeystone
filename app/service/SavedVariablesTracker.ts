@@ -48,20 +48,21 @@ export class SavedVariablesTracker {
             .filter(entry => entry.character.realm === defaultRealm());
 
         if (!initial) {
-            let newKeystones: KeystoneEntry[] = [];
-            keystones.forEach((keystone) => {
-                if (!this.entryCache.find((k) => k.equals(keystone))) {
-                    console.log(`Adding new keystone: ${keystone}`);
-                    /*if (this.keystoneRepo.Add(keystone)) {
-                        newKeystones.push(keystone);
-                        console.log("Added keystone: " + keystone.toString());
-                    }*/
-                }
-            });
+            let newKeystones = keystones.filter(
+                (keystone => !this.entryCache.find(
+                    cached => cached.equals(keystone)
+                ))
+            );
 
             if (newKeystones.length > 0) {
-                let message = newKeystones.map((k) => k.toString()).unshift(`${newKeystones.length} keystones fetched from !keys:`);
-                this.channel.send(message);
+                this.keystoneRepo.AddAll(newKeystones).then(result => {
+                    if (result.length > 0) {
+                        console.log(`${result.length} keystones fetched from !keys: ${result}`);
+                        let message = result.map((k) => k.toString());
+                        message.unshift(`${result.length} keystones fetched from !keys:`);
+                        this.channel.send(message);
+                    }
+                })
             }
         }
 

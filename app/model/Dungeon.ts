@@ -13,6 +13,10 @@ export class Dungeon {
         return `**${this.name}** (${this.aliases.join(', ')})`;
     }
 
+    public equals(o: Dungeon): boolean {
+        return this.id == o.id;
+    }
+
     public static fromJSON(obj: any): Dungeon {
         return new Dungeon(obj["id"], obj["name"], obj["aliases"]);
     }

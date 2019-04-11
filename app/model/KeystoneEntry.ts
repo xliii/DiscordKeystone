@@ -14,6 +14,10 @@ export class KeystoneEntry {
         return `**${this.character}**: ${this.keystone}`;
     }
 
+    public equals(o: KeystoneEntry) {
+        return this.character.equals(o.character) && this.keystone.equals(o.keystone);
+    }
+
     public static fromJSON(obj: any): KeystoneEntry {
         return new KeystoneEntry(Character.fromJSON(obj["character"]), Keystone.fromJSON(obj["keystone"]));
     }

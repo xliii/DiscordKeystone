@@ -7,22 +7,28 @@ import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
 import {Dungeon} from "../model/Dungeon";
 import {Character} from "../model/Character";
 import {defaultRealm} from "../model/Settings";
+import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
+import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
 
 export class SavedVariablesTracker {
 
     channel: TextChannel;
     dungeonRepo: IDungeonRepository;
+    keystoneRepo: IKeystoneEntryRepository;
+    entryCache: KeystoneEntry[];
 
     constructor(channel: TextChannel, path?: string) {
         this.channel = channel;
         this.dungeonRepo = new DungeonFileRepository();
+        this.keystoneRepo = new KeystoneEntryFileRepository();
+        this.entryCache = [];
         if (path) {
             console.log(`Tracking SavedVariables at ${path}`);
-            this.extractKeystones(path);
+            this.entryCache = this.extractKeystones(path, true);
             watchFile(path, () => {
                 try {
                     console.log("SavedVariables has changed: Updating...");
-                    this.extractKeystones(path);
+                    this.extractKeystones(path, false);
                 } catch (e) {
                     console.error(`Error while updating saved variables: ${e}`);
                 }
@@ -30,7 +36,7 @@ export class SavedVariablesTracker {
         }
     }
 
-    private extractKeystones(path: string): any {
+    private extractKeystones(path: string, initial: boolean): KeystoneEntry[] {
         const content = readFileSync(path, "utf8");
         const marker = '["keystones"] = {';
         let start = content.indexOf(marker);
@@ -40,7 +46,26 @@ export class SavedVariablesTracker {
             .filter(entry => entry.length > 0)
             .map(entry => this.parseEntry(entry))
             .filter(entry => entry.character.realm === defaultRealm());
-        console.log(keystones);
+
+        if (!initial) {
+            let newKeystones: KeystoneEntry[] = [];
+            keystones.forEach((keystone) => {
+                if (!this.entryCache.find((k) => k.equals(keystone))) {
+                    console.log(`Adding new keystone: ${keystone}`);
+                    /*if (this.keystoneRepo.Add(keystone)) {
+                        newKeystones.push(keystone);
+                        console.log("Added keystone: " + keystone.toString());
+                    }*/
+                }
+            });
+
+            if (newKeystones.length > 0) {
+                let message = newKeystones.map((k) => k.toString()).unshift(`${newKeystones.length} keystones fetched from !keys:`);
+                this.channel.send(message);
+            }
+        }
+
+        return keystones;
     }
 
     private parseEntry(entry: string): KeystoneEntry {

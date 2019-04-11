@@ -13,6 +13,10 @@ export class Keystone {
         return `${this.dungeon.name} ${this.key}`;
     }
 
+    public equals(o: Keystone) {
+        return this.dungeon.equals(o.dungeon) && this.key === o.key;
+    }
+
     public static fromJSON(obj: any): Keystone {
         return new Keystone(Dungeon.fromJSON(obj["dungeon"]), obj["key"]);
     }

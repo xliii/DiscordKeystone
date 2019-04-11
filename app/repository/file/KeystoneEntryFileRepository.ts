@@ -10,7 +10,7 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
 
     Add(entry: KeystoneEntry): void {
         let entries: KeystoneEntry[] = this.List();
-        entries = entries.filter(k => k.character !== entry.character);
+        entries = entries.filter((k: KeystoneEntry) => !k.character.equals(entry.character));
         entries.push(entry);
         this.write(entries);
     }

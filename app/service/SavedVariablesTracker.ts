@@ -15,20 +15,19 @@ export class SavedVariablesTracker {
     channel: TextChannel;
     dungeonRepo: IDungeonRepository;
     keystoneRepo: IKeystoneEntryRepository;
-    entryCache: KeystoneEntry[];
 
     constructor(channel: TextChannel, path?: string) {
         this.channel = channel;
         this.dungeonRepo = new DungeonFileRepository();
         this.keystoneRepo = new KeystoneEntryFileRepository();
-        this.entryCache = [];
+
         if (path) {
             console.log(`Tracking SavedVariables at ${path}`);
-            this.entryCache = this.extractKeystones(path, true);
+            this.extractKeystones(path);
             watchFile(path, () => {
                 try {
                     console.log("SavedVariables has changed: Updating...");
-                    this.extractKeystones(path, false);
+                    this.extractKeystones(path);
                 } catch (e) {
                     console.error(`Error while updating saved variables: ${e}`);
                 }
@@ -36,7 +35,7 @@ export class SavedVariablesTracker {
         }
     }
 
-    private extractKeystones(path: string, initial: boolean): KeystoneEntry[] {
+    private extractKeystones(path: string): void {
         const content = readFileSync(path, "utf8");
         const marker = '["keystones"] = {';
         let start = content.indexOf(marker);
@@ -47,31 +46,21 @@ export class SavedVariablesTracker {
             .map(entry => this.parseEntry(entry))
             .filter(entry => entry.character.realm === defaultRealm());
 
-        if (!initial) {
-            let newKeystones = keystones.filter(
-                (keystone => !this.entryCache.find(
-                    cached => cached.equals(keystone)
-                ))
-            );
-
-            if (newKeystones.length > 0) {
-                this.keystoneRepo.AddAll(newKeystones).then(result => {
-                    if (result.length > 0) {
-                        console.log(`${result.length} keystones fetched from !keys: ${result}`);
-                        let message = result.map((k) => k.toString());
-                        message.unshift(`${result.length} keystones fetched from !keys:`);
-                        this.channel.send(message);
-                    }
-                })
-            }
+        if (keystones.length > 0) {
+            this.keystoneRepo.AddAll(keystones).then(result => {
+                if (result.length > 0) {
+                    console.log(`${result.length} keystones fetched from !keys: ${result}`);
+                    let message = result.map((k) => k.toString());
+                    message.unshift(`${result.length} keystones fetched from !keys:`);
+                    this.channel.send(message);
+                }
+            })
         }
-
-        return keystones;
     }
 
     private parseEntry(entry: string): KeystoneEntry {
-        const match: RegExpMatchArray | null = entry.match(/\["(.*)-(.*)"] = "\|cffa335ee\|Hkeystone:158923:(\d{3}):(\d*):.*/);
-        if (!match) {
+        const match: RegExpMatchArray | null = entry.match(/\["(.*)-(.*)"] = "(\d*)\|(\d*)\|(\d*)\|(.*)/);
+        if (!match || match.length != 7) {
             throw new Error("Invalid format: " + entry);
         }
 
@@ -79,8 +68,10 @@ export class SavedVariablesTracker {
         const realm = match[2];
         const dungeonId = parseInt(match[3]);
         const key = parseInt(match[4]);
+        const timestamp = parseInt(match[5]);
+        //const dungeonName = match[6];
 
         const dungeon:Dungeon = this.dungeonRepo.Get(dungeonId);
-        return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key));
+        return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key), timestamp);
     }
 }

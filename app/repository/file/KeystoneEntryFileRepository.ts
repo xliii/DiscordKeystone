@@ -13,9 +13,10 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
     Add(entry: KeystoneEntry): Promise<boolean> {
         return this.read().then((map: any) => {
             let key = entry.character.name;
-            if (map[key] && entry.equals(map[key])) {
+            if (map[key] && !this.canReplace(entry, map[key])) {
                 return false;
             }
+
             map[key] = entry;
             return this.write(map).then(() => true);
         });
@@ -26,7 +27,7 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
             let updated: KeystoneEntry[] = [];
             entries.forEach(entry => {
                 let key = entry.character.name;
-                if (map[key] && entry.equals(map[key])) {
+                if (map[key] && !this.canReplace(entry, map[key])) {
                     return false;
                 }
 
@@ -35,6 +36,20 @@ export class KeystoneEntryFileRepository implements IKeystoneEntryRepository {
             });
             return updated.length > 0 ? this.write(map).then(() => updated) : updated;
         });
+    }
+
+    private canReplace(newEntry: KeystoneEntry, oldEntry: any): boolean {
+        let old = KeystoneEntry.fromJSON(oldEntry);
+        if (newEntry.equals(old)) {
+            console.log(`${newEntry} is already present`);
+            return false;
+        }
+        if (newEntry.olderThan(old)) {
+            console.log(`${newEntry} is older than existing key: ${old}`);
+            return false;
+        }
+
+        return true;
     }
 
     List(): Promise<KeystoneEntry[]> {

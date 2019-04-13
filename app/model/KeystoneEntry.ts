@@ -4,10 +4,12 @@ import {Character} from "./Character";
 export class KeystoneEntry {
     character: Character;
     keystone: Keystone;
+    timestamp: number;
 
-    constructor(character: Character, keystone: Keystone) {
+    constructor(character: Character, keystone: Keystone, timestamp: number) {
         this.character = character;
         this.keystone = keystone;
+        this.timestamp = timestamp;
     }
 
     toString():string {
@@ -18,7 +20,11 @@ export class KeystoneEntry {
         return this.character.equals(o.character) && this.keystone.equals(o.keystone);
     }
 
+    public olderThan(o: KeystoneEntry) {
+        return this.timestamp < o.timestamp;
+    }
+
     public static fromJSON(obj: any): KeystoneEntry {
-        return new KeystoneEntry(Character.fromJSON(obj["character"]), Keystone.fromJSON(obj["keystone"]));
+        return new KeystoneEntry(Character.fromJSON(obj["character"]), Keystone.fromJSON(obj["keystone"]), obj["timestamp"]);
     }
 }

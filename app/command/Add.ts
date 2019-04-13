@@ -43,7 +43,7 @@ module.exports = function(args: string[], message:Message): StringResolvable {
         const entryRepo = new KeystoneEntryFileRepository();
         const dungeon: Dungeon = dungeonRepo.GetByName(dungeonName);
         const keystone: Keystone = new Keystone(dungeon, key);
-        const entry: KeystoneEntry = new KeystoneEntry(new Character(character), keystone);
+        const entry: KeystoneEntry = new KeystoneEntry(new Character(character), keystone, new Date().getTime());
         return entryRepo.Add(entry).then(() => {
             return `**${keystone}** added to **${character}**`;
         });

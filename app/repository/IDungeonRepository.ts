@@ -1,7 +1,7 @@
 import {Dungeon} from "../model/Dungeon";
+import {IRepository} from "./IRepository";
 
-export interface IDungeonRepository {
-    List():Dungeon[];
-    Get(id:number):Dungeon;
-    GetByName(name:string):Dungeon;
+export interface IDungeonRepository extends IRepository<Dungeon> {
+    Get(id:number):Promise<Dungeon>;
+    GetByName(name:string):Promise<Dungeon>;
 }

@@ -1,36 +1,38 @@
-import fs = require("fs");
 import {IDungeonRepository} from "../IDungeonRepository";
 import {Dungeon} from "../../model/Dungeon";
+import {AbstractRepository} from "../AbstractRepository";
 
-export class DungeonFileRepository implements IDungeonRepository {
+export class DungeonFileRepository extends AbstractRepository implements IDungeonRepository {
 
-    private static PATH:string = "./data/dungeons.json";
-
-    Get(id: number): Dungeon {
-        const filtered = this.List()
-            .filter(d => d.id == id);
-
-        if (!filtered || !filtered.length) {
-            throw `Dungeon not found: ${id}`;
-        }
-        return filtered[0];
+    protected repoPath(): string {
+        return "./data/dungeons.json";
     }
 
-    GetByName(name:string): Dungeon {
-        const filtered = this.List()
-            .filter(d => d.name.toLowerCase() === name.toLowerCase() ||
-                d.aliases.find(a => a.toLowerCase() === name.toLowerCase()));
-
-        if (!filtered || !filtered.length) {
-            throw `Dungeon not found: ${name}`;
-        }
-        return filtered[0];
+    Get(id: number): Promise<Dungeon> {
+        return this.List().then(dungeons => {
+            const dungeon = dungeons.find(d => d.id === id);
+            if (!dungeon) {
+                throw `Dungeon not found: ${id}`;
+            }
+            return dungeon;
+        });
     }
 
-    List(): Dungeon[] {
-        return fs.existsSync(DungeonFileRepository.PATH) ?
-            JSON.parse(fs.readFileSync(DungeonFileRepository.PATH, "utf8"))
-                .map((o:any) => Dungeon.fromJSON(o)) :
-            [];
+    GetByName(name:string): Promise<Dungeon> {
+        return this.List().then(dungeons => {
+            const dungeon = dungeons.find(d => d.matches(name));
+
+            if (!dungeon) {
+                throw `Dungeon not found: ${name}`;
+            }
+            return dungeon;
+        });
+
+    }
+
+    List(): Promise<Dungeon[]> {
+        return this.readArray().then(dungeons => {
+            return dungeons.map((dungeon: any) => Dungeon.fromJSON(dungeon));
+        });
     }
 }

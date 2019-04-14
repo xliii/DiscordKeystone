@@ -13,6 +13,11 @@ export class Dungeon {
         return `**${this.name}** (${this.aliases.join(', ')})`;
     }
 
+    public matches(name: string): boolean {
+        return this.name.toLowerCase() === name.toLowerCase()
+            || this.aliases.findIndex(a => a.toLowerCase() === name.toLowerCase()) >= 0;
+    }
+
     public equals(o: Dungeon): boolean {
         return this.id == o.id;
     }

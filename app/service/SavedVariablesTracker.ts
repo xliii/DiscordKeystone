@@ -4,7 +4,6 @@ import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Keystone} from "../model/Keystone";
 import {IDungeonRepository} from "../repository/IDungeonRepository";
 import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
-import {Dungeon} from "../model/Dungeon";
 import {Character} from "../model/Character";
 import {defaultRealm} from "../model/Settings";
 import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
@@ -40,25 +39,27 @@ export class SavedVariablesTracker {
         const marker = '["keystones"] = {';
         let start = content.indexOf(marker);
         let keystoneSection = content.substring(start + marker.length, content.indexOf('}', start));
-        let keystones = keystoneSection.split(',')
+        let keystonePromises:Promise<KeystoneEntry>[] = keystoneSection.split(',')
             .map(entry => entry.trim())
             .filter(entry => entry.length > 0)
-            .map(entry => this.parseEntry(entry))
-            .filter(entry => entry.character.realm === defaultRealm());
+            .map(entry => this.parseEntry(entry));
 
-        if (keystones.length > 0) {
-            this.keystoneRepo.AddAll(keystones).then(result => {
-                if (result.length > 0) {
-                    console.log(`${result.length} keystones fetched from !keys: ${result}`);
-                    let message = result.map((k) => k.toString());
-                    message.unshift(`${result.length} keystones fetched from !keys:`);
-                    this.channel.send(message);
-                }
-            })
-        }
+        Promise.all(keystonePromises).then(keystones => {
+            keystones = keystones.filter(entry => entry.character.realm === defaultRealm());
+            if (keystones.length > 0) {
+                this.keystoneRepo.AddAll(keystones).then(result => {
+                    if (result.length > 0) {
+                        console.log(`${result.length} keystones fetched from !keys: ${result}`);
+                        let message = result.map((k) => k.toString());
+                        message.unshift(`${result.length} keystones fetched from !keys:`);
+                        this.channel.send(message);
+                    }
+                })
+            }
+        });
     }
 
-    private parseEntry(entry: string): KeystoneEntry {
+    private parseEntry(entry: string): Promise<KeystoneEntry> {
         const match: RegExpMatchArray | null = entry.match(/\["(.*)-(.*)"] = "(\d*)\|(\d*)\|(\d*)\|(.*)/);
         if (!match || match.length != 7) {
             throw new Error("Invalid format: " + entry);
@@ -71,7 +72,8 @@ export class SavedVariablesTracker {
         const timestamp = parseInt(match[5]);
         //const dungeonName = match[6];
 
-        const dungeon:Dungeon = this.dungeonRepo.Get(dungeonId);
-        return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key), timestamp);
+        return this.dungeonRepo.Get(dungeonId).then(dungeon => {
+            return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key), timestamp);
+        });
     }
 }

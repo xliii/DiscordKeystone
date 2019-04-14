@@ -1,8 +1,13 @@
 import fs = require('fs');
 
-import {Client, Message, StringResolvable} from "discord.js"
+import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js"
 
 module.exports = function(client:Client, message:Message): void {
+
+    if (message.channel.type === "dm") {
+        processDM(client, message);
+    }
+
     const parts = message.content.split(' ');
     if (parts[0] !== "/keys") {
         return
@@ -39,3 +44,14 @@ module.exports = function(client:Client, message:Message): void {
         }
     });
 };
+
+function processDM(client:Client, message:Message) {
+    const dmChannel: DMChannel = message.channel as DMChannel;
+    if (dmChannel.recipient.id == process.env.ADMIN) {
+
+        console.log(`${dmChannel.recipient.username} < ${message}`);
+        const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
+        channel.send(message.content);
+        console.log(`${channel.name} > ${message}`);
+    }
+}

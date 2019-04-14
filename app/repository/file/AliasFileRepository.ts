@@ -1,54 +1,52 @@
-import fs = require("fs");
-import ErrnoException = NodeJS.ErrnoException;
 import {IAliasRepository} from "../IAliasRepository";
 import {Alias} from "../../model/Alias";
+import {AbstractRepository} from "../AbstractRepository";
 
-export class AliasFileRepository implements IAliasRepository {
+export class AliasFileRepository extends AbstractRepository implements IAliasRepository {
 
-    private static PATH:string = "./data/aliases.json";
-    List(): Alias[] {
-        return fs.existsSync(AliasFileRepository.PATH) ?
-        JSON.parse(fs.readFileSync(AliasFileRepository.PATH, "utf8"))
-            .map((o:any) => Alias.fromJSON(o)) :
-        [];
+    protected repoPath(): string {
+        return "./data/aliases.json";
     }
 
-    Add(alias: Alias): void {
-        let aliases: Alias[] = this.List();
-        aliases = aliases.filter(a => a.discordId !== alias.discordId);
-        aliases.push(alias);
-        this.write(aliases);
+    List(): Promise<Alias[]> {
+        return this.readObject().then((map: any) => {
+            return Object.keys(map)
+                .map(prop => Alias.fromJSON(map[prop]));
+        });
     }
 
-    Get(discordId: string): Alias {
-        const filtered = this.List()
-            .filter(a => a.discordId === discordId);
+    Add(alias: Alias): Promise<Boolean> {
+        return this.readObject().then((map: any) => {
+            let key = alias.discordId;
+            if (map[key] && alias.equals(map[key])) {
+                return false;
+            }
 
-        if (!filtered || !filtered.length) {
-            throw "Alias not found";
-        }
-        return filtered[0];
+            map[key] = alias;
+            return this.write(map).then(() => true);
+        });
     }
 
-    private write(aliases:Alias[]): void {
-        const data = JSON.stringify(aliases, null, 2);
-        fs.writeFile(AliasFileRepository.PATH, data, "utf8", AliasFileRepository.writeCallback);
-    }
+    Get(discordId: string): Promise<Alias> {
+        return this.List().then(aliases => {
+            const alias = aliases.find(a => a.discordId === discordId);
+            if (!alias) {
+                throw "Alias not found";
+            }
 
-    private static writeCallback(err: ErrnoException): void {
-        if (err) {
-            console.error("Failed writing Keystones", err);
-        }
-    }
-
-    Remove(discordId: string): Alias | undefined {
-        let aliases: Alias[] = this.List();
-        let alias: any = aliases.find(a => a.discordId === discordId);
-        if (alias) {
-            aliases = aliases.filter(a => a.discordId !== discordId);
-            this.write(aliases);
             return alias;
-        }
-        return undefined;
+        });
+    }
+
+    Remove(discordId: string): Promise<Alias | undefined> {
+        return this.readObject().then((map: any) => {
+            let alias = map[discordId];
+            if (!alias) {
+                return Promise.resolve(undefined);
+            }
+
+            delete map[discordId];
+            return this.write(map).then(() => Alias.fromJSON(alias));
+        });
     }
 }

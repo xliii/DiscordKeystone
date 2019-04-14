@@ -10,6 +10,10 @@ export class Alias {
         this.character = character;
     }
 
+    public equals(o: Alias): boolean {
+        return this.discordId === o.discordId && this.character === o.character;
+    }
+
     toString():string {
         return `**${this.discordName}**: ${this.character}`;
     }

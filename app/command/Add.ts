@@ -26,8 +26,9 @@ module.exports = function(args: string[], message:Message): Promise<StringResolv
         const discordId: string = message.author.id;
 
         const aliasRepo = new AliasFileRepository();
-        const alias = aliasRepo.Get(discordId);
-        return addKeystone(alias.character, dungeonName, key);
+        return aliasRepo.Get(discordId).then(alias => {
+            return addKeystone(alias.character, dungeonName, key);
+        });
     }
 
     function addExplicit(args: string[]): Promise<StringResolvable> {

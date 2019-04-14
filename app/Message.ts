@@ -32,6 +32,9 @@ module.exports = function(client:Client, message:Message): void {
                 Promise.resolve(handler(args, message)).then((response:StringResolvable) => {
                     console.log(`> ${response}`);
                     message.channel.send(response);
+                }).catch(error => {
+                    console.error(`> ${error}`);
+                    message.channel.send(error);
                 });
                 matched = true;
            }

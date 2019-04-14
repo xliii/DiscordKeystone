@@ -3,12 +3,12 @@ import {AliasFileRepository} from "../repository/file/AliasFileRepository";
 import {Alias} from "../model/Alias";
 import {AliasService} from "../service/AliasService";
 
-module.exports = function(args: string[], message: Message): StringResolvable {
-    const usage = ["**Usage:**",
+module.exports = function(args: string[], message: Message): Promise<StringResolvable> {
+    const usage = Promise.resolve(["**Usage:**",
         "/keys alias set [character]",
         "/keys alias get",
         "/keys alias list",
-        "/keys alias remove"];
+        "/keys alias remove"]);
 
     if (args.length < 1) {
         return usage;
@@ -25,9 +25,9 @@ module.exports = function(args: string[], message: Message): StringResolvable {
 
 };
 
-function set(message: Message, args: string[]): StringResolvable {
+function set(message: Message, args: string[]): Promise<StringResolvable> {
     if (args.length !== 1) {
-        return "**Usage**: /keys alias set [character]"
+        return Promise.resolve("**Usage**: /keys alias set [character]");
     }
 
     const discordId: string = message.author.id;
@@ -35,31 +35,35 @@ function set(message: Message, args: string[]): StringResolvable {
     const character: string = args[0];
     const repository = new AliasFileRepository();
 
-    repository.Add(new Alias(discordName, discordId, character));
-    return `Alias **${character}** added for **${discordName}**`;
+    return repository.Add(new Alias(discordName, discordId, character)).then(() => {
+        return `Alias **${character}** added for **${discordName}**`;
+    });
 }
 
-function get(message: Message): StringResolvable {
+function get(message: Message): Promise<StringResolvable> {
     let service = new AliasService();
-    let character = service.extractAlias(message);
-    return `**${message.author.username}**'s alias is **${character}**`;
+    return service.extractAlias(message).then(character => {
+        return `**${message.author.username}**'s alias is **${character}**`;
+    })
+
 }
 
-function list(): StringResolvable {
+function list(): Promise<StringResolvable> {
     const repository = new AliasFileRepository();
-    const aliases: Alias[] = repository.List();
-
-    return aliases.length > 0 ?
-        aliases :
-        "No aliases available";
+    return repository.List().then(aliases => {
+        return aliases.length > 0 ?
+            aliases :
+            "No aliases available";
+    });
 }
 
-function remove(message: Message): StringResolvable {
+function remove(message: Message): Promise<StringResolvable> {
     const repository = new AliasFileRepository();
     const discordId: string = message.author.id;
     const discordName: string = message.author.username;
-    let alias: any = repository.Remove(discordId);
-    return alias ?
-        `Alias **${alias.character}** removed from **${discordName}**` :
-        `No alias found for **${discordName}`;
+    return repository.Remove(discordId).then(alias => {
+        return alias ?
+            `Alias **${alias.character}** removed from **${discordName}**` :
+            `No alias found for **${discordName}**`;
+    })
 }

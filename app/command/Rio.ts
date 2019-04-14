@@ -3,18 +3,17 @@ import {AliasService} from "../service/AliasService";
 import {RioService} from "../service/RioService";
 
 module.exports = function(args: string[], message: Message): Promise<StringResolvable> {
-    let character: string;
     if (args.length > 0) {
-        character = args[0];
+        return process(args[0]);
     } else {
         const aliasService = new AliasService();
-        try {
-            character = aliasService.extractAlias(message);
-        } catch (notFound) {
-            return notFound;
-        }
+        return aliasService.extractAlias(message).then(alias => {
+            return process(alias);
+        });
     }
+};
 
+function process(character: string) {
     const rioService = new RioService();
 
     return rioService.RioScore(character).then((score: String) => {
@@ -22,4 +21,4 @@ module.exports = function(args: string[], message: Message): Promise<StringResol
     }).catch((notFound: string) => {
         return Promise.resolve(`${notFound}: **${character}**`);
     });
-};
+}

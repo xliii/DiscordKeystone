@@ -43,7 +43,6 @@ export class KeystoneEntryFileRepository extends AbstractRepository implements I
     private canReplace(newEntry: KeystoneEntry, oldEntry: any): boolean {
         let old = KeystoneEntry.fromJSON(oldEntry);
         if (newEntry.equals(old)) {
-            console.log(`${newEntry} is already present`);
             return false;
         }
         if (newEntry.olderThan(old)) {

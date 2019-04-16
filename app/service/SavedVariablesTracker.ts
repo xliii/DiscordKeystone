@@ -21,11 +21,9 @@ export class SavedVariablesTracker {
         this.keystoneRepo = new KeystoneEntryFileRepository();
 
         if (path) {
-            console.log(`Tracking SavedVariables at ${path}`);
             this.extractKeystones(path);
             watchFile(path, () => {
                 try {
-                    console.log("SavedVariables has changed: Updating...");
                     this.extractKeystones(path);
                 } catch (e) {
                     console.error(`Error while updating saved variables: ${e}`);

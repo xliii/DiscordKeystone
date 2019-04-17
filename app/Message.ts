@@ -13,10 +13,10 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    console.log(`< ${message}`);
+    logInput(message);
 
     if (parts.length < 2) {
-        message.channel.send(`Please specify command: **${message} [command]**`);
+        sendMessage(message.channel as TextChannel, `Please specify command: **${message} [command]**`);
         return;
     }
 
@@ -30,11 +30,9 @@ module.exports = function(client:Client, message:Message): void {
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
                 Promise.resolve(handler(args, message)).then((response:StringResolvable) => {
-                    console.log(`> ${response}`);
-                    message.channel.send(response);
+                    sendMessage(message.channel as TextChannel, response);
                 }).catch(error => {
-                    console.error(`> ${error}`);
-                    message.channel.send(error);
+                    sendMessage(message.channel as TextChannel, error);
                 });
                 matched = true;
            }
@@ -42,8 +40,7 @@ module.exports = function(client:Client, message:Message): void {
 
         if (!matched) {
             let response = `Unknown command: **${message}**`;
-            console.log(`> ${response}`);
-            message.channel.send(response);
+            sendMessage(message.channel as TextChannel, response);
         }
     });
 };
@@ -52,9 +49,17 @@ function processDM(client:Client, message:Message) {
     const dmChannel: DMChannel = message.channel as DMChannel;
     if (dmChannel.recipient.id == process.env.ADMIN) {
 
-        console.log(`${dmChannel.recipient.username} < ${message}`);
-        const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
-        channel.send(message.content);
-        console.log(`${channel.name} > ${message}`);
+        console.log(`${message.author.username} < ${message}`);
+        const channel: TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
+        sendMessage(channel, message.content);
     }
+}
+
+function logInput(message: Message) {
+    console.log(`${message.author.username} < ${message.content}`);
+}
+
+function sendMessage(channel: TextChannel, message: StringResolvable) {
+    console.log(`${channel.name} > ${message}`);
+    channel.send(message);
 }

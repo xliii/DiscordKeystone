@@ -20,8 +20,9 @@ export class Scheduler {
     public scheduleWeeklyReset():void {
         this.scheduleJob = scheduleJob("0 10 10 * * 3", () => {
             this.affixesRequest().then(affixes => {
-                this.entryRepo.Clear();
-                this.channel.send(`**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`);
+                this.entryRepo.Clear().then(() => {
+                    this.channel.send(`**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`);
+                });
             });
         });
     }

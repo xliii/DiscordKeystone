@@ -1,29 +1,17 @@
 import {Job, scheduleJob} from "node-schedule";
-import {StringResolvable, TextChannel} from "discord.js";
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
-import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
+import {TextChannel} from "discord.js";
+import {WeeklyService} from "./WeeklyService";
 
 export class Scheduler {
 
-    entryRepo: IKeystoneEntryRepository;
-    channel: TextChannel;
-    affixesRequest: () => Promise<StringResolvable>;
-    scheduleJob?: Job;
-
+    private weeklyResetJob?: Job;
+    private weeklyService: WeeklyService;
 
     constructor(channel:TextChannel) {
-        this.channel = channel;
-        this.entryRepo = new KeystoneEntryFileRepository();
-        this.affixesRequest = require('../command/Affixes');
+        this.weeklyService = new WeeklyService(channel);
     }
 
     public scheduleWeeklyReset():void {
-        this.scheduleJob = scheduleJob("0 10 10 * * 3", () => {
-            this.affixesRequest().then(affixes => {
-                this.entryRepo.Clear().then(() => {
-                    this.channel.send(`**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`);
-                });
-            });
-        });
+        this.weeklyResetJob = scheduleJob("0 10 10 * * 3", this.weeklyService.weeklyReset);
     }
 }

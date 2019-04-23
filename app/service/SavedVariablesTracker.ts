@@ -11,9 +11,9 @@ import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileR
 
 export class SavedVariablesTracker {
 
-    channel: TextChannel;
-    dungeonRepo: IDungeonRepository;
-    keystoneRepo: IKeystoneEntryRepository;
+    private channel: TextChannel;
+    private dungeonRepo: IDungeonRepository;
+    private keystoneRepo: IKeystoneEntryRepository;
 
     constructor(channel: TextChannel, path?: string) {
         this.channel = channel;

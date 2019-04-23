@@ -3,7 +3,7 @@ import {AliasFileRepository} from "../repository/file/AliasFileRepository";
 import {IAliasRepository} from "../repository/IAliasRepository";
 
 export class AliasService {
-    repository: IAliasRepository;
+    private repository: IAliasRepository;
 
     constructor() {
         this.repository = new AliasFileRepository();

@@ -20,8 +20,12 @@ export class KeystoneEntry {
         return this.character.equals(o.character) && this.keystone.equals(o.keystone);
     }
 
-    public olderThan(o: KeystoneEntry) {
+    public olderThanKeystone(o: KeystoneEntry) {
         return this.timestamp < o.timestamp;
+    }
+
+    public olderThanDate(d: Date) {
+        return this.timestamp < d.getTime();
     }
 
     public static fromJSON(obj: any): KeystoneEntry {

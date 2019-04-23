@@ -1,8 +1,16 @@
 import {IKeystoneEntryRepository} from "../IKeystoneEntryRepository";
 import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {AbstractRepository} from "../AbstractRepository";
+import {WeeklyService} from "../../service/WeeklyService";
 
 export class KeystoneEntryFileRepository extends AbstractRepository implements IKeystoneEntryRepository {
+
+    private weeklyService: WeeklyService;
+
+    constructor() {
+        super();
+        this.weeklyService = new WeeklyService();
+    }
 
     protected repoPath(): string {
         return "./data/keystones.json";
@@ -42,11 +50,18 @@ export class KeystoneEntryFileRepository extends AbstractRepository implements I
 
     private canReplace(newEntry: KeystoneEntry, oldEntry: any): boolean {
         let old = KeystoneEntry.fromJSON(oldEntry);
-        if (newEntry.equals(old)) {
+
+        if (newEntry.olderThanDate(this.weeklyService.weekStart())) {
+            //console.log(`${newEntry} is from previous week`);
             return false;
         }
-        if (newEntry.olderThan(old)) {
-            console.log(`${newEntry} is older than existing key: ${old}`);
+
+        if (newEntry.equals(old)) {
+            //console.log(`${newEntry} is already present`);
+            return false;
+        }
+        if (newEntry.olderThanKeystone(old)) {
+            //console.log(`${newEntry} is older than existing key: ${old}`);
             return false;
         }
 

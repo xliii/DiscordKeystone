@@ -20,7 +20,7 @@ export class WeeklyService {
     public weekStart(): Date {
         let date = new Date();
         let day = date.getDay();
-        let daysDiff = (day <= 3) ? (7 - 3 + day) : (day - 3);
+        let daysDiff = (day < 3) ? (7 - 3 + day) : (day - 3);
 
         date.setDate(date.getDate() - daysDiff);
         date.setHours(10);

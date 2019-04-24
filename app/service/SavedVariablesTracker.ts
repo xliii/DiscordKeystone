@@ -8,6 +8,7 @@ import {Character} from "../model/Character";
 import {defaultRealm} from "../model/Settings";
 import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
 import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import {sendMessage} from "./Util";
 
 export class SavedVariablesTracker {
 
@@ -47,10 +48,9 @@ export class SavedVariablesTracker {
             if (keystones.length > 0) {
                 this.keystoneRepo.AddAll(keystones).then(result => {
                     if (result.length > 0) {
-                        console.log(`${result.length} keystones fetched from !keys: ${result}`);
                         let message = result.map((k) => k.toString());
                         message.unshift(`${result.length} keystones fetched from !keys:`);
-                        this.channel.send(message);
+                        sendMessage(this.channel, message);
                     }
                 })
             }

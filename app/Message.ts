@@ -1,6 +1,7 @@
 import fs = require('fs');
 
 import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js"
+import {sendMessage} from "./service/Util";
 
 module.exports = function(client:Client, message:Message): void {
 
@@ -57,9 +58,4 @@ function processDM(client:Client, message:Message) {
 
 function logInput(message: Message) {
     console.log(`${message.author.username} < ${message.content}`);
-}
-
-function sendMessage(channel: TextChannel, message: StringResolvable) {
-    console.log(`${channel.name} > ${message}`);
-    channel.send(message);
 }

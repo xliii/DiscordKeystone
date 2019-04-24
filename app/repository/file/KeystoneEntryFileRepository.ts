@@ -37,7 +37,7 @@ export class KeystoneEntryFileRepository extends AbstractRepository implements I
             let updated: KeystoneEntry[] = [];
             entries.forEach(entry => {
                 let key = entry.character.name;
-                if (map[key] && !this.canReplace(entry, map[key])) {
+                if (!this.canReplace(entry, map[key])) {
                     return false;
                 }
 
@@ -49,21 +49,27 @@ export class KeystoneEntryFileRepository extends AbstractRepository implements I
     }
 
     private canReplace(newEntry: KeystoneEntry, oldEntry: any): boolean {
-        let old = KeystoneEntry.fromJSON(oldEntry);
-
         if (newEntry.olderThanDate(this.weeklyService.weekStart())) {
-            //console.log(`${newEntry} is from previous week`);
+            console.log(`${newEntry} is from previous week`);
             return false;
         }
 
+        if (!oldEntry) {
+            return true;
+        }
+
+        let old = KeystoneEntry.fromJSON(oldEntry);
+
         if (newEntry.equals(old)) {
-            //console.log(`${newEntry} is already present`);
+            console.log(`${newEntry} is already present`);
             return false;
         }
         if (newEntry.olderThanKeystone(old)) {
-            //console.log(`${newEntry} is older than existing key: ${old}`);
+            console.log(`${newEntry} is older than existing key: ${old}`);
             return false;
         }
+
+        console.log(`Adding ${newEntry}`);
 
         return true;
     }

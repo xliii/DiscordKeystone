@@ -1,6 +1,7 @@
 import {Job, scheduleJob} from "node-schedule";
 import {TextChannel} from "discord.js";
 import {WeeklyService} from "./WeeklyService";
+import {sendMessage} from "./Util";
 
 export class Scheduler {
 
@@ -16,7 +17,7 @@ export class Scheduler {
     public scheduleWeeklyReset():void {
         this.weeklyResetJob = scheduleJob("0 10 10 * * 3", () => {
             this.weeklyService.weeklyReset().then(result => {
-                this.channel.send(result);
+                sendMessage(this.channel, result);
             })
         });
     }

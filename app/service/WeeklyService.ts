@@ -11,7 +11,7 @@ export class WeeklyService {
 
     public weeklyReset(): Promise<StringResolvable> {
         return this.affixesRequest().then(affixes => {
-            new KeystoneEntryFileRepository().Clear().then(() => {
+            return new KeystoneEntryFileRepository().Clear().then(() => {
                 return `**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`;
             });
         });

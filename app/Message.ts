@@ -14,6 +14,12 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
+    //TODO: Remove later when Dima had enough
+    if (message.content.indexOf("coffee") >= 0) {
+        sendMessage(message.channel as TextChannel, `NAHUJ IDI`);
+        return
+    }
+
     logInput(message);
 
     if (parts.length < 2) {

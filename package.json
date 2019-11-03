@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prod": "tsc && node ./build/app.js",
-    "start": "node ./build/app.js",
-    "tsc": "tsc",
+    "start": "node ./build/App.js",
     "build": "tsc"
   },
   "dependencies": {

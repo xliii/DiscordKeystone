@@ -5,7 +5,8 @@
   "scripts": {
     "prod": "tsc && node ./build/app.js",
     "start": "node ./build/app.js",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "build": "tsc"
   },
   "dependencies": {
     "@types/node": "^11.11.6",

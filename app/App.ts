@@ -6,6 +6,10 @@ import {SavedVariablesTracker} from "./service/SavedVariablesTracker";
 const client = new Discord.Client();
 require("dotenv").config();
 
+for (let entry in process.env) {
+    console.log(`${entry}: ${process.env[entry]}`)
+}
+
 const messageHandler = require("./Message");
 
 client.on("ready", () => {
@@ -27,7 +31,7 @@ client.login(process.env.BOT_TOKEN).then(() => {
     const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
     const scheduler = new Scheduler(channel);
     scheduler.scheduleWeeklyReset();
-    const keystoneTracker = new SavedVariablesTracker(channel, process.env.SAVED_VARIABLES_PATH);
+    //const keystoneTracker = new SavedVariablesTracker(channel, process.env.SAVED_VARIABLES_PATH);
 }).catch(err => {
     console.error("Bot could not login", err);
 });

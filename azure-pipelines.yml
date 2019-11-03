@@ -26,6 +26,7 @@ steps:
     Contents: |
       node_modules/**/*.js
       node_modules/**/*.json
+      data/dungeons.json
       build/**/*.js
       package.json
     TargetFolder: '$(Build.ArtifactStagingDirectory)'

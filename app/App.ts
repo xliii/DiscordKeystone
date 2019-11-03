@@ -6,10 +6,6 @@ import {SavedVariablesTracker} from "./service/SavedVariablesTracker";
 const client = new Discord.Client();
 require("dotenv").config();
 
-for (let entry in process.env) {
-    console.log(`${entry}: ${process.env[entry]}`)
-}
-
 const messageHandler = require("./Message");
 
 client.on("ready", () => {

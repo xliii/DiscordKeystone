@@ -1,4 +1,5 @@
 import fs = require('fs');
+import path = require('path');
 
 import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js"
 import {respond, sendMessage} from "./service/Util";
@@ -45,7 +46,7 @@ module.exports = function(client:Client, message:Message): void {
 
     const command = parts[1];
 
-    fs.readdir('./app/command/', function(err, files) {
+    fs.readdir(path.join(__dirname, 'command'), function(err, files) {
         if (err) {
             console.error(err);
         }

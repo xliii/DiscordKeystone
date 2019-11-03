@@ -77,7 +77,8 @@ export class KeystoneEntryFileRepository extends AbstractRepository implements I
     List(): Promise<KeystoneEntry[]> {
         return this.readObject().then((map: any) => {
             return Object.keys(map)
-                .map(prop => KeystoneEntry.fromJSON(map[prop]));
+                .map(prop => KeystoneEntry.fromJSON(map[prop]))
+                .filter(key => !key.olderThanDate(this.weeklyService.weekStart()))
         });
     }
 

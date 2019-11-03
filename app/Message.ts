@@ -1,12 +1,28 @@
 import fs = require('fs');
 
 import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js"
-import {sendMessage} from "./service/Util";
+import {respond, sendMessage} from "./service/Util";
+import PizdaService from "./service/PizdaService";
+import DaService from "./service/DaService";
 
 module.exports = function(client:Client, message:Message): void {
 
+    if (message.author.id == process.env.BOT_ID) {
+        return
+    }
+
     if (message.channel.type === "dm") {
         processDM(client, message);
+    }
+
+    if (PizdaService.matches(message)) {
+        sendMessage(message.channel as TextChannel, PizdaService.response(message));
+        return
+    }
+
+    if (DaService.matches(message)) {
+        respond(message, DaService.response(message));
+        return
     }
 
     const parts = message.content.split(' ');
@@ -16,14 +32,14 @@ module.exports = function(client:Client, message:Message): void {
 
     //TODO: Remove later when Dima had enough
     if (message.content.indexOf("coffee") >= 0) {
-        sendMessage(message.channel as TextChannel, `NAHUJ IDI`);
+        respond(message, `NAHUJ IDI`);
         return
     }
 
     logInput(message);
 
     if (parts.length < 2) {
-        sendMessage(message.channel as TextChannel, `Please specify command: **${message} [command]**`);
+        respond(message, `Please specify command: **${message} [command]**`);
         return;
     }
 
@@ -37,9 +53,9 @@ module.exports = function(client:Client, message:Message): void {
             if (command.toUpperCase() === commandName.toUpperCase()) {
                 const args:string[] = parts.slice(2);
                 Promise.resolve(handler(args, message)).then((response:StringResolvable) => {
-                    sendMessage(message.channel as TextChannel, response);
+                    respond(message, response);
                 }).catch(error => {
-                    sendMessage(message.channel as TextChannel, error);
+                    respond(message, error);
                 });
                 matched = true;
            }
@@ -47,7 +63,7 @@ module.exports = function(client:Client, message:Message): void {
 
         if (!matched) {
             let response = `Unknown command: **${message}**`;
-            sendMessage(message.channel as TextChannel, response);
+            respond(message, response);
         }
     });
 };

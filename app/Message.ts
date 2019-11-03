@@ -46,6 +46,10 @@ module.exports = function(client:Client, message:Message): void {
     const command = parts[1];
 
     fs.readdir('./app/command/', function(err, files) {
+        if (err) {
+            console.error(err);
+        }
+
         let matched = false;
         files.forEach(function(file) {
             const commandName = file.split('.')[0];

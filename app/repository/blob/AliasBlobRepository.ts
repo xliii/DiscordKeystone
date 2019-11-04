@@ -2,7 +2,7 @@ import {IAliasRepository} from "../IAliasRepository";
 import {Alias} from "../../model/Alias";
 import {AbstractBlobRepository} from "./AbstractBlobRepository";
 
-export class AliasBlobRepository extends AbstractBlobRepository implements IAliasRepository {
+class AliasBlobRepository extends AbstractBlobRepository implements IAliasRepository {
 
     protected blobName(): string {
         return "aliases.json";
@@ -50,3 +50,5 @@ export class AliasBlobRepository extends AbstractBlobRepository implements IAlia
         });
     }
 }
+
+export default new AliasBlobRepository();

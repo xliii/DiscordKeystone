@@ -2,7 +2,7 @@ import {IDungeonRepository} from "../IDungeonRepository";
 import {Dungeon} from "../../model/Dungeon";
 import {AbstractBlobRepository} from "./AbstractBlobRepository";
 
-export class DungeonBlobRepository extends AbstractBlobRepository implements IDungeonRepository {
+class DungeonBlobRepository extends AbstractBlobRepository implements IDungeonRepository {
 
     protected blobName(): string {
         return "dungeons.json";
@@ -36,3 +36,5 @@ export class DungeonBlobRepository extends AbstractBlobRepository implements IDu
         });
     }
 }
+
+export default new DungeonBlobRepository();

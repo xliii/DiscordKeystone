@@ -3,7 +3,7 @@ import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {WeeklyService} from "../../service/WeeklyService";
 import {AbstractBlobRepository} from "./AbstractBlobRepository";
 
-export class KeystoneEntryBlobRepository extends AbstractBlobRepository implements IKeystoneEntryRepository {
+class KeystoneEntryBlobRepository extends AbstractBlobRepository implements IKeystoneEntryRepository {
 
     private weeklyService: WeeklyService;
 
@@ -94,3 +94,5 @@ export class KeystoneEntryBlobRepository extends AbstractBlobRepository implemen
         });
     }
 }
+
+export default new KeystoneEntryBlobRepository();

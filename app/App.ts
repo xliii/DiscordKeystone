@@ -2,6 +2,10 @@ import Discord = require("discord.js");
 import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
 
+if (process.env.NODE_ENV !== 'production') {
+    require("dotenv").config();
+}
+
 const http = require('http');
 const port = process.env.PORT || 3000;
 
@@ -14,7 +18,6 @@ const requestHandler = (request: any, response: any) => {
 http.createServer(requestHandler).listen(port);
 
 const client = new Discord.Client();
-require("dotenv").config();
 
 const messageHandler = require("./Message");
 

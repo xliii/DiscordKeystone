@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export abstract class AbstractRepository {
+export abstract class AbstractFileRepository {
 
     protected abstract repoPath(): string;
 

@@ -1,8 +1,8 @@
 import {IDungeonRepository} from "../IDungeonRepository";
 import {Dungeon} from "../../model/Dungeon";
-import {AbstractRepository} from "../AbstractRepository";
+import {AbstractFileRepository} from "./AbstractFileRepository";
 
-export class DungeonFileRepository extends AbstractRepository implements IDungeonRepository {
+export class DungeonFileRepository extends AbstractFileRepository implements IDungeonRepository {
 
     protected repoPath(): string {
         return "./data/dungeons.json";

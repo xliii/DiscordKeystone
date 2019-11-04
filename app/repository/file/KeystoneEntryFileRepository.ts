@@ -3,7 +3,7 @@ import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {AbstractFileRepository} from "./AbstractFileRepository";
 import {WeeklyService} from "../../service/WeeklyService";
 
-export class KeystoneEntryFileRepository extends AbstractFileRepository implements IKeystoneEntryRepository {
+class KeystoneEntryFileRepository extends AbstractFileRepository implements IKeystoneEntryRepository {
 
     private weeklyService: WeeklyService;
 
@@ -94,3 +94,5 @@ export class KeystoneEntryFileRepository extends AbstractFileRepository implemen
         });
     }
 }
+
+export default new KeystoneEntryFileRepository();

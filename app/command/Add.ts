@@ -1,9 +1,9 @@
 import {Keystone} from "../model/Keystone";
-import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import dungeonRepo from "../repository/file/DungeonFileRepository";
+import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Message, StringResolvable} from "discord.js";
-import {AliasFileRepository} from "../repository/file/AliasFileRepository";
+import aliasRepo from "../repository/file/AliasFileRepository";
 import {Character} from "../model/Character";
 
 module.exports = function(args: string[], message:Message): Promise<StringResolvable> {
@@ -25,7 +25,6 @@ module.exports = function(args: string[], message:Message): Promise<StringResolv
         const key: number = parseInt(args[1]);
         const discordId: string = message.author.id;
 
-        const aliasRepo = new AliasFileRepository();
         return aliasRepo.Get(discordId).then(alias => {
             return addKeystone(alias.character, dungeonName, key);
         });
@@ -39,12 +38,10 @@ module.exports = function(args: string[], message:Message): Promise<StringResolv
     }
     
     function addKeystone(character:string, dungeonName:string, key:number): Promise<StringResolvable> {
-        const dungeonRepo = new DungeonFileRepository();
-        const entryRepo = new KeystoneEntryFileRepository();
         return dungeonRepo.GetByName(dungeonName).then(dungeon => {
             const keystone: Keystone = new Keystone(dungeon, key);
             const entry: KeystoneEntry = new KeystoneEntry(new Character(character), keystone, new Date().getTime());
-            return entryRepo.Add(entry).then(() => {
+            return keystoneRepo.Add(entry).then(() => {
                 return `**${keystone}** added to **${character}**`;
             });
         });

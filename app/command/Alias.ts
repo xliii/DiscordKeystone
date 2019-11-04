@@ -1,5 +1,5 @@
 import {Message, StringResolvable} from "discord.js";
-import {AliasFileRepository} from "../repository/file/AliasFileRepository";
+import repository from "../repository/file/AliasFileRepository";
 import {Alias} from "../model/Alias";
 import {AliasService} from "../service/AliasService";
 
@@ -33,7 +33,6 @@ function set(message: Message, args: string[]): Promise<StringResolvable> {
     const discordId: string = message.author.id;
     const discordName: string = message.author.username;
     const character: string = args[0];
-    const repository = new AliasFileRepository();
 
     return repository.Add(new Alias(discordName, discordId, character)).then(() => {
         return `Alias **${character}** added for **${discordName}**`;
@@ -49,7 +48,6 @@ function get(message: Message): Promise<StringResolvable> {
 }
 
 function list(): Promise<StringResolvable> {
-    const repository = new AliasFileRepository();
     return repository.List().then(aliases => {
         return aliases.length > 0 ?
             aliases :
@@ -58,7 +56,6 @@ function list(): Promise<StringResolvable> {
 }
 
 function remove(message: Message): Promise<StringResolvable> {
-    const repository = new AliasFileRepository();
     const discordId: string = message.author.id;
     const discordName: string = message.author.username;
     return repository.Remove(discordId).then(alias => {

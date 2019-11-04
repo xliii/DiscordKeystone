@@ -1,4 +1,4 @@
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import repository from "../repository/file/KeystoneEntryFileRepository";
 import {StringResolvable} from "discord.js";
 
 module.exports = function(args: string[]): StringResolvable {
@@ -7,7 +7,6 @@ module.exports = function(args: string[]): StringResolvable {
     }
 
     let user:string = args[0];
-    let repository = new KeystoneEntryFileRepository();
     return repository.Remove(user).then(keystone => {
         return keystone ?
             `**${keystone.keystone}** removed from **${user}**` :

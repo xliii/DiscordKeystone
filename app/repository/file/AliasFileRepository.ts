@@ -2,7 +2,7 @@ import {IAliasRepository} from "../IAliasRepository";
 import {Alias} from "../../model/Alias";
 import {AbstractFileRepository} from "./AbstractFileRepository";
 
-export class AliasFileRepository extends AbstractFileRepository implements IAliasRepository {
+class AliasFileRepository extends AbstractFileRepository implements IAliasRepository {
 
     protected repoPath(): string {
         return "./data/aliases.json";
@@ -50,3 +50,5 @@ export class AliasFileRepository extends AbstractFileRepository implements IAlia
         });
     }
 }
+
+export default new AliasFileRepository();

@@ -37,12 +37,7 @@ class AzureBlobService {
         return new Promise((resolve, reject) => {
             this.blobService.getBlobToText(this.containerName, blobName, (err, data) => {
                 if (err) {
-                    let code = (err as StorageError).statusCode;
-                    if (code == 404) {
-                        resolve('');
-                    } else {
-
-                    }
+                    reject(err);
                 } else{
                     resolve(data);
                 }

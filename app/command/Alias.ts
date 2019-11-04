@@ -1,7 +1,9 @@
 import {Message, StringResolvable} from "discord.js";
-import repository from "../repository/file/AliasFileRepository";
 import {Alias} from "../model/Alias";
 import {AliasService} from "../service/AliasService";
+
+import repositories from "../repository/Repositories";
+const repository = repositories.aliasRepository();
 
 module.exports = function(args: string[], message: Message): Promise<StringResolvable> {
     const usage = Promise.resolve(["**Usage:**",

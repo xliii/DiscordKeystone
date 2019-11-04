@@ -2,11 +2,13 @@ import {TextChannel} from "discord.js";
 import {readFileSync, watchFile} from "fs";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Keystone} from "../model/Keystone";
-import dungeonRepo from "../repository/file/DungeonFileRepository";
 import {Character} from "../model/Character";
 import {defaultRealm} from "../model/Settings";
-import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 import {sendMessage} from "./Util";
+
+import repositories from "../repository/Repositories";
+const dungeonRepo = repositories.dungeonRepository();
+const keystoneRepo = repositories.keystoneRepository();
 
 export class SavedVariablesTracker {
 

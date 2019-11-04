@@ -1,15 +1,12 @@
 import {IKeystoneEntryRepository} from "../IKeystoneEntryRepository";
 import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {AbstractFileRepository} from "./AbstractFileRepository";
-import {WeeklyService} from "../../service/WeeklyService";
+import weeklyService from "../../service/WeeklyService";
 
 class KeystoneEntryFileRepository extends AbstractFileRepository implements IKeystoneEntryRepository {
 
-    private weeklyService: WeeklyService;
-
     constructor() {
         super();
-        this.weeklyService = new WeeklyService();
     }
 
     protected repoPath(): string {
@@ -49,7 +46,7 @@ class KeystoneEntryFileRepository extends AbstractFileRepository implements IKey
     }
 
     private canReplace(newEntry: KeystoneEntry, oldEntry: any): boolean {
-        if (newEntry.olderThanDate(this.weeklyService.weekStart())) {
+        if (newEntry.olderThanDate(weeklyService.weekStart())) {
             console.log(`${newEntry} is from previous week`);
             return false;
         }
@@ -78,7 +75,7 @@ class KeystoneEntryFileRepository extends AbstractFileRepository implements IKey
         return this.readObject().then((map: any) => {
             return Object.keys(map)
                 .map(prop => KeystoneEntry.fromJSON(map[prop]))
-                .filter(key => !key.olderThanDate(this.weeklyService.weekStart()))
+                .filter(key => !key.olderThanDate(weeklyService.weekStart()))
         });
     }
 

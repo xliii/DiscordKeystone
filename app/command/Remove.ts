@@ -1,5 +1,7 @@
-import repository from "../repository/file/KeystoneEntryFileRepository";
 import {StringResolvable} from "discord.js";
+
+import repositories from "../repository/Repositories";
+const repository = repositories.keystoneRepository();
 
 module.exports = function(args: string[]): StringResolvable {
     if (args.length !== 1) {

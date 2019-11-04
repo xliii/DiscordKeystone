@@ -1,5 +1,7 @@
 import {Message} from "discord.js";
-import repository from "../repository/file/AliasFileRepository";
+
+import repositories from "../repository/Repositories";
+const repository = repositories.aliasRepository();
 
 export class AliasService {
 

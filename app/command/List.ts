@@ -1,6 +1,8 @@
-import repository from "../repository/file/KeystoneEntryFileRepository";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {StringResolvable} from "discord.js";
+
+import repositories from "../repository/Repositories";
+const repository = repositories.keystoneRepository();
 
 module.exports = function(args: string[]): Promise<StringResolvable> {
     const BY_KEY = "bykey";

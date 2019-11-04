@@ -1,4 +1,4 @@
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import repository from "../repository/file/KeystoneEntryFileRepository";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {StringResolvable} from "discord.js";
 
@@ -7,7 +7,6 @@ module.exports = function(args: string[]): Promise<StringResolvable> {
     const BY_DUNGEON = "bydungeon";
     const DEFAULT_SORTING = byDungeon;
 
-    const repository = new KeystoneEntryFileRepository();
     return repository.List().then(keystones => {
         return keystones.length > 0 ?
             keystones.sort(getSorting(args)) :

@@ -2,24 +2,18 @@ import {TextChannel} from "discord.js";
 import {readFileSync, watchFile} from "fs";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Keystone} from "../model/Keystone";
-import {IDungeonRepository} from "../repository/IDungeonRepository";
-import {DungeonFileRepository} from "../repository/file/DungeonFileRepository";
+import dungeonRepo from "../repository/file/DungeonFileRepository";
 import {Character} from "../model/Character";
 import {defaultRealm} from "../model/Settings";
-import {IKeystoneEntryRepository} from "../repository/IKeystoneEntryRepository";
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 import {sendMessage} from "./Util";
 
 export class SavedVariablesTracker {
 
     private channel: TextChannel;
-    private dungeonRepo: IDungeonRepository;
-    private keystoneRepo: IKeystoneEntryRepository;
 
     constructor(channel: TextChannel, path?: string) {
         this.channel = channel;
-        this.dungeonRepo = new DungeonFileRepository();
-        this.keystoneRepo = new KeystoneEntryFileRepository();
 
         if (path) {
             this.extractKeystones(path);
@@ -46,7 +40,7 @@ export class SavedVariablesTracker {
         Promise.all(keystonePromises).then(keystones => {
             keystones = keystones.filter(entry => entry.character.realm === defaultRealm());
             if (keystones.length > 0) {
-                this.keystoneRepo.AddAll(keystones).then(result => {
+                keystoneRepo.AddAll(keystones).then(result => {
                     if (result.length > 0) {
                         let message = result.map((k) => k.toString());
                         message.unshift(`${result.length} keystones fetched from !keys:`);
@@ -70,7 +64,7 @@ export class SavedVariablesTracker {
         const timestamp = parseInt(match[5]);
         //const dungeonName = match[6];
 
-        return this.dungeonRepo.Get(dungeonId).then(dungeon => {
+        return dungeonRepo.Get(dungeonId).then(dungeon => {
             return new KeystoneEntry(new Character(character, realm), new Keystone(dungeon, key), timestamp);
         });
     }

@@ -1,5 +1,5 @@
 import {StringResolvable} from "discord.js";
-import {KeystoneEntryFileRepository} from "../repository/file/KeystoneEntryFileRepository";
+import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 
 export class WeeklyService {
 
@@ -11,7 +11,7 @@ export class WeeklyService {
 
     public weeklyReset(): Promise<StringResolvable> {
         return this.affixesRequest().then(affixes => {
-            return new KeystoneEntryFileRepository().Clear().then(() => {
+            return keystoneRepo.Clear().then(() => {
                 return `**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`;
             });
         });

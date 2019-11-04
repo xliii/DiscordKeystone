@@ -2,7 +2,7 @@ import {IDungeonRepository} from "../IDungeonRepository";
 import {Dungeon} from "../../model/Dungeon";
 import {AbstractFileRepository} from "./AbstractFileRepository";
 
-export class DungeonFileRepository extends AbstractFileRepository implements IDungeonRepository {
+class DungeonFileRepository extends AbstractFileRepository implements IDungeonRepository {
 
     protected repoPath(): string {
         return "./data/dungeons.json";
@@ -36,3 +36,5 @@ export class DungeonFileRepository extends AbstractFileRepository implements IDu
         });
     }
 }
+
+export default new DungeonFileRepository();

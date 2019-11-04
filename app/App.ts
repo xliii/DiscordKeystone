@@ -1,10 +1,10 @@
-import Discord = require("discord.js");
-import {Scheduler} from "./service/Scheduler";
-import {TextChannel} from "discord.js";
-
 if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
+
+import Discord = require("discord.js");
+import {Scheduler} from "./service/Scheduler";
+import {TextChannel} from "discord.js";
 
 const http = require('http');
 const port = process.env.PORT || 3000;
@@ -40,7 +40,6 @@ client.login(process.env.BOT_TOKEN).then(() => {
     const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
     const scheduler = new Scheduler(channel);
     scheduler.scheduleWeeklyReset();
-    //const keystoneTracker = new SavedVariablesTracker(channel, process.env.SAVED_VARIABLES_PATH);
 }).catch(err => {
     console.error("Bot could not login", err);
 });

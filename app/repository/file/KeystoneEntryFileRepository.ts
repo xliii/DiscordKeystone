@@ -1,9 +1,9 @@
 import {IKeystoneEntryRepository} from "../IKeystoneEntryRepository";
 import {KeystoneEntry} from "../../model/KeystoneEntry";
-import {AbstractRepository} from "../AbstractRepository";
+import {AbstractFileRepository} from "./AbstractFileRepository";
 import {WeeklyService} from "../../service/WeeklyService";
 
-export class KeystoneEntryFileRepository extends AbstractRepository implements IKeystoneEntryRepository {
+export class KeystoneEntryFileRepository extends AbstractFileRepository implements IKeystoneEntryRepository {
 
     private weeklyService: WeeklyService;
 

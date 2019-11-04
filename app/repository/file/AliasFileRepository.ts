@@ -1,8 +1,8 @@
 import {IAliasRepository} from "../IAliasRepository";
 import {Alias} from "../../model/Alias";
-import {AbstractRepository} from "../AbstractRepository";
+import {AbstractFileRepository} from "./AbstractFileRepository";
 
-export class AliasFileRepository extends AbstractRepository implements IAliasRepository {
+export class AliasFileRepository extends AbstractFileRepository implements IAliasRepository {
 
     protected repoPath(): string {
         return "./data/aliases.json";

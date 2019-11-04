@@ -1,7 +1,9 @@
 import {StringResolvable} from "discord.js";
-import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 
-export class WeeklyService {
+import repositories from "../repository/Repositories";
+const keystoneRepo = repositories.keystoneRepository();
+
+class WeeklyService {
 
     private affixesRequest: () => Promise<StringResolvable>;
 
@@ -31,3 +33,5 @@ export class WeeklyService {
         return date;
     }
 }
+
+export default new WeeklyService();

@@ -1,10 +1,12 @@
 import {Keystone} from "../model/Keystone";
-import dungeonRepo from "../repository/file/DungeonFileRepository";
-import keystoneRepo from "../repository/file/KeystoneEntryFileRepository";
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {Message, StringResolvable} from "discord.js";
-import aliasRepo from "../repository/file/AliasFileRepository";
 import {Character} from "../model/Character";
+
+import repositories from "../repository/Repositories";
+const aliasRepo = repositories.aliasRepository();
+const keystoneRepo = repositories.keystoneRepository();
+const dungeonRepo = repositories.dungeonRepository();
 
 module.exports = function(args: string[], message:Message): Promise<StringResolvable> {
 

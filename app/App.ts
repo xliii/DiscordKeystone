@@ -1,7 +1,17 @@
 import Discord = require("discord.js");
 import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
-import {SavedVariablesTracker} from "./service/SavedVariablesTracker";
+
+const http = require('http');
+const port = process.env.PORT || 3000;
+
+console.log(`Port: ${port}`);
+const requestHandler = (request: any, response: any) => {
+    console.log(request.url);
+    response.end('Hello Keystone Bot!');
+};
+
+http.createServer(requestHandler).listen(port);
 
 const client = new Discord.Client();
 require("dotenv").config();

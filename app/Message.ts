@@ -31,12 +31,6 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    //TODO: Remove later when Dima had enough
-    if (message.content.indexOf("coffee") >= 0) {
-        respond(message, `NAHUJ IDI`);
-        return
-    }
-
     logInput(message);
 
     if (parts.length < 2) {

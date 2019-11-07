@@ -40,7 +40,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy archive'
   inputs:
-    SourceFolder: '$(System.ArtifactStagingDirectory)'
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: |
       *.zip
     TargetFolder: '$(Build.ArtifactStagingDirectory)/archive'

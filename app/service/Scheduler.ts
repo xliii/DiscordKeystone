@@ -13,10 +13,14 @@ export class Scheduler {
     }
 
     public scheduleWeeklyReset():void {
-        this.weeklyResetJob = scheduleJob("0 10 10 * * 3", () => {
+        this.weeklyResetJob = scheduleJob("0 10 7 * * 3", () => {
             weeklyService.weeklyReset().then(result => {
                 sendMessage(this.channel, result);
             })
+        });
+
+        scheduleJob("0 0 9 * *", () => {
+            sendMessage(this.channel, "it's 11 AM")
         });
     }
 }

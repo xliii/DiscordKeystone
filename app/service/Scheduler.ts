@@ -18,9 +18,5 @@ export class Scheduler {
                 sendMessage(this.channel, result);
             })
         });
-
-        scheduleJob("0 35 9 * * *", () => {
-            sendMessage(this.channel, "it's 11:35 AM")
-        });
     }
 }

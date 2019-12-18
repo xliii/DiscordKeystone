@@ -25,7 +25,7 @@ class WeeklyService {
         let daysDiff = (day < 3) ? (7 - 3 + day) : (day - 3);
 
         date.setDate(date.getDate() - daysDiff);
-        date.setHours(10);
+        date.setHours(7);
         date.setMinutes(0);
         date.setSeconds(0);
         date.setMilliseconds(0);

@@ -4,6 +4,7 @@ import {Message, StringResolvable} from "discord.js";
 import {Character} from "../model/Character";
 
 import repositories from "../repository/Repositories";
+import {camelcase} from "../service/Util";
 const aliasRepo = repositories.aliasRepository();
 const keystoneRepo = repositories.keystoneRepository();
 const dungeonRepo = repositories.dungeonRepository();
@@ -33,7 +34,7 @@ module.exports = function(args: string[], message:Message): Promise<StringResolv
     }
 
     function addExplicit(args: string[]): Promise<StringResolvable> {
-        const character: string = args[0];
+        const character: string = camelcase(args[0]);
         const dungeonName: string = args[1];
         const key: number = parseInt(args[2]);
         return addKeystone(character, dungeonName, key);

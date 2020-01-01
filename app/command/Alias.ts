@@ -3,6 +3,7 @@ import {Alias} from "../model/Alias";
 import {AliasService} from "../service/AliasService";
 
 import repositories from "../repository/Repositories";
+import {camelcase} from "../service/Util";
 const repository = repositories.aliasRepository();
 
 module.exports = function(args: string[], message: Message): Promise<StringResolvable> {
@@ -34,7 +35,7 @@ function set(message: Message, args: string[]): Promise<StringResolvable> {
 
     const discordId: string = message.author.id;
     const discordName: string = message.author.username;
-    const character: string = args[0];
+    const character: string = camelcase(args[0]);
 
     return repository.Add(new Alias(discordName, discordId, character)).then(() => {
         return `Alias **${character}** added for **${discordName}**`;

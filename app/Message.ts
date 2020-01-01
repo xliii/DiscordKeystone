@@ -59,7 +59,7 @@ module.exports = function(client:Client, message:Message): void {
                 matched = true;
             }
 
-            if (['ADD', 'REMOVE', 'CLEAR', 'LIST'].includes(command.toUpperCase())) {
+            if (['ADD', 'REMOVE', 'CLEAR'].includes(command.toUpperCase())) {
                 message.delete(1000).then(result => {
                     console.log(result)
                 }).catch(error => {

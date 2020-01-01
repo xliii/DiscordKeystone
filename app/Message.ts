@@ -57,7 +57,15 @@ module.exports = function(client:Client, message:Message): void {
                     respond(message, error);
                 });
                 matched = true;
-           }
+            }
+
+            if (['ADD', 'REMOVE', 'CLEAR', 'LIST'].includes(command.toUpperCase())) {
+                message.delete(1000).then(result => {
+                    console.log(result)
+                }).catch(error => {
+                    console.error(error)
+                })
+            }
         });
 
         if (!matched) {

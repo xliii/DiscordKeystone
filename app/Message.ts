@@ -60,7 +60,7 @@ module.exports = function(client:Client, message:Message): void {
             }
 
             if (['ADD', 'REMOVE', 'CLEAR'].includes(command.toUpperCase())) {
-                message.delete(1000).then(result => {
+                message.delete(0).then(result => {
                     console.log(result)
                 }).catch(error => {
                     console.error(error)

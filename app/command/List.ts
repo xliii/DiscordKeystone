@@ -28,7 +28,12 @@ module.exports = function(args: string[]): Promise<StringResolvable> {
         if (filter) {
             let result = [];
             result.push(filter.header);
-            result.push(...keystones.filter(filter.filter));
+            keystones = keystones.filter(filter.filter);
+            if (keystones.length == 0) {
+                result.push("No keystones available");
+            } else {
+                result.push(...keystones);
+            }
             return result;
         } else {
             return "Invalid filter";

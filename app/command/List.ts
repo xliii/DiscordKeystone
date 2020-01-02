@@ -1,5 +1,6 @@
 import {KeystoneEntry} from "../model/KeystoneEntry";
 import {StringResolvable} from "discord.js";
+import FilterService from "../service/FilterService";
 
 import repositories from "../repository/Repositories";
 const repository = repositories.keystoneRepository();
@@ -10,9 +11,28 @@ module.exports = function(args: string[]): Promise<StringResolvable> {
     const DEFAULT_SORTING = byDungeon;
 
     return repository.List().then(keystones => {
-        return keystones.length > 0 ?
-            keystones.sort(getSorting(args)) :
-            "No keystones available";
+        if (keystones.length == 0) {
+            return "No keystones available";
+        }
+
+        keystones = keystones.sort(byDungeon);
+
+        if (args.length == 0) {
+            let result = [];
+            result.push('All keystones:');
+            result.push(...keystones);
+            return result;
+        }
+
+        const filter = FilterService.create(args[0]);
+        if (filter) {
+            let result = [];
+            result.push(filter.header);
+            result.push(...keystones.filter(filter.filter));
+            return result;
+        } else {
+            return "Invalid filter";
+        }
     });
 
     function byKey(a: KeystoneEntry, b: KeystoneEntry): number {
@@ -27,9 +47,12 @@ module.exports = function(args: string[]): Promise<StringResolvable> {
         if (args.length < 1) return DEFAULT_SORTING;
         if (args.length === 1) {
             switch (args[0]) {
-                case BY_KEY: return byKey;
-                case BY_DUNGEON: return byDungeon;
-                default: throw `Invalid sorting. Available: **${BY_KEY}**, **${BY_DUNGEON}**`;
+                case BY_KEY:
+                    return byKey;
+                case BY_DUNGEON:
+                    return byDungeon;
+                default:
+                    throw `Invalid sorting. Available: **${BY_KEY}**, **${BY_DUNGEON}**`;
             }
         }
     }

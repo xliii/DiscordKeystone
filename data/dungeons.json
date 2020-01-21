@@ -61,5 +61,25 @@
       "ToP",
       "Theater"
     ]
+  },
+  {
+    "id": 4000,
+    "name": "Mechagon: Workshop",
+    "aliases": [
+      "UM",
+      "Workshop",
+      "Upper",
+      "WS"
+    ]
+  },
+  {
+    "id": 5000,
+    "name": "Mechagon: Junkyard",
+    "aliases": [
+      "LM",
+      "Junkyard",
+      "Lower",
+      "JY"
+    ]
   }
 ]

@@ -85,7 +85,8 @@
       "UM",
       "Workshop",
       "Upper",
-      "WS"
+      "WS",
+      "MW"
     ]
   },
   {
@@ -95,7 +96,8 @@
       "LM",
       "Junkyard",
       "Lower",
-      "JY"
+      "JY",
+      "MJ"
     ]
   }
 ]

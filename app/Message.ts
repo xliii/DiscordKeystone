@@ -16,6 +16,10 @@ module.exports = function(client:Client, message:Message): void {
         processDM(client, message);
     }
 
+    if (message.channel.id !== process.env.CHANNEL_ID) {
+        return
+    }
+
     if (PizdaService.matches(message)) {
         sendMessage(message.channel as TextChannel, PizdaService.response(message));
         return

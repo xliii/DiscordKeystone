@@ -7,7 +7,6 @@ import PizdaService from "./service/PizdaService";
 import DaService from "./service/DaService";
 
 module.exports = function(client:Client, message:Message): void {
-
     if (message.author.id == process.env.BOT_ID) {
         return
     }
@@ -16,7 +15,7 @@ module.exports = function(client:Client, message:Message): void {
         processDM(client, message);
     }
 
-    if (message.channel.id !== process.env.CHANNEL_ID) {
+    if (message.guild && message.guild.id !== process.env.GUILD_ID) {
         return
     }
 

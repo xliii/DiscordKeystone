@@ -1,7 +1,7 @@
 import fs = require('fs');
 import path = require('path');
 
-import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js"
+import {Client, Message, StringResolvable, TextChannel} from "discord.js"
 import {respond, sendMessage} from "./service/Util";
 import PizdaService from "./service/PizdaService";
 import DaService from "./service/DaService";
@@ -11,9 +11,9 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    if (message.channel.type === "dm") {
-        processDM(client, message);
-    }
+    // if (message.channel.type === "dm") {
+    //     processDM(client, message);
+    // }
 
     if (message.guild && message.guild.id !== process.env.GUILD_ID) {
         return
@@ -77,16 +77,6 @@ module.exports = function(client:Client, message:Message): void {
         }
     });
 };
-
-function processDM(client:Client, message:Message) {
-    const dmChannel: DMChannel = message.channel as DMChannel;
-    if (dmChannel.recipient.id == process.env.ADMIN) {
-
-        console.log(`${message.author.username} < ${message}`);
-        const channel: TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
-        sendMessage(channel, message.content);
-    }
-}
 
 function logInput(message: Message) {
     console.log(`${message.author.username} < ${message.content}`);

@@ -14,6 +14,10 @@ class Remove extends Command {
         return "/keys remove [character]";
     }
 
+    clearInput(): boolean {
+        return true;
+    }
+
     protected oneArg(arg1: string, context: Message): Promise<StringResolvable> {
         let user: string = camelcase(arg1);
 

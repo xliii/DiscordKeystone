@@ -8,7 +8,7 @@ export abstract class Command {
 
     public abstract name(): string;
 
-    protected abstract usage(): string;
+    protected abstract usage(): StringResolvable;
 
     protected noArg(context: Message): Promise<StringResolvable> {
         return Promise.resolve(this.usage());

@@ -4,32 +4,30 @@ import path = require("path");
 import {Message, StringResolvable} from "discord.js";
 
 class Commands {
-
     commands: Command[];
 
     constructor() {
         this.commands = [];
-
         let self:Commands = this;
-
         fs.readdir(path.join(__dirname, 'command'), function(err, files) {
             if (err) {
                 console.error(err);
                 return;
             }
 
-            files.forEach(function(file) {
-                console.log('File: ' + file);
-                const commandName = file.split('.')[0];
+            let promises: Promise<any>[] = [];
 
-                if (['Add', 'Alias', 'List', 'old'].includes(commandName)) {
-                    return;
-                }
-                import('./command/' + commandName).then(imported => {
-                    console.log('Import: ' + imported + ' ' + commandName);
+            files.forEach(function(file) {
+                const commandName = file.split('.')[0];
+                let promise = import('./command/' + commandName).then(imported => {
                     let cmd: Command = imported.default;
                     self.addCommand(cmd);
                 });
+                promises.push(promise);
+            });
+
+            Promise.all(promises).then(() => {
+                console.log(`${self.commands.length} commands registered`)
             });
         });
     }

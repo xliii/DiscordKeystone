@@ -1,7 +1,7 @@
 import {Message, StringResolvable} from "discord.js";
-import {AliasService} from "../service/AliasService";
-import {RioService} from "../service/RioService";
-import {camelcase} from "../service/Util";
+import {AliasService} from "../../service/AliasService";
+import {RioService} from "../../service/RioService";
+import {camelcase} from "../../service/Util";
 
 module.exports = function(args: string[], message: Message): Promise<StringResolvable> {
     if (args.length > 0) {

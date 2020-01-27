@@ -1,8 +1,8 @@
-import {KeystoneEntry} from "../model/KeystoneEntry";
+import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {StringResolvable} from "discord.js";
-import FilterService from "../service/FilterService";
+import FilterService from "../../service/FilterService";
 
-import repositories from "../repository/Repositories";
+import repositories from "../../repository/Repositories";
 const repository = repositories.keystoneRepository();
 
 module.exports = function(args: string[]): Promise<StringResolvable> {

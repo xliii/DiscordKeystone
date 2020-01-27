@@ -1,9 +1,9 @@
 import {Message, StringResolvable} from "discord.js";
-import {Alias} from "../model/Alias";
-import {AliasService} from "../service/AliasService";
+import {Alias} from "../../model/Alias";
+import {AliasService} from "../../service/AliasService";
 
-import repositories from "../repository/Repositories";
-import {camelcase} from "../service/Util";
+import repositories from "../../repository/Repositories";
+import {camelcase} from "../../service/Util";
 const repository = repositories.aliasRepository();
 
 module.exports = function(args: string[], message: Message): Promise<StringResolvable> {

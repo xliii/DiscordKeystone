@@ -1,5 +1,19 @@
-import {StringResolvable} from "discord.js";
+import {Command} from "./Command";
+import {Message, StringResolvable} from "discord.js";
 
-module.exports = function(): Promise<StringResolvable> {
-    return Promise.resolve('NAHUJ IDI');
-};
+class Coffee extends Command {
+
+    public name(): string {
+        return "Coffee";
+    }
+
+    protected usage(): string {
+        return "/keys coffee";
+    }
+
+    protected noArg(context: Message): Promise<StringResolvable> {
+        return Promise.resolve("IDI NAHUJ");
+    }
+}
+
+export default new Coffee();

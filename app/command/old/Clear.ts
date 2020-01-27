@@ -1,6 +1,6 @@
 import {StringResolvable} from "discord.js";
 
-import repositories from "../repository/Repositories";
+import repositories from "../../repository/Repositories";
 const repository = repositories.keystoneRepository();
 
 module.exports = function(): Promise<StringResolvable> {

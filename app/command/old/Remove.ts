@@ -1,7 +1,7 @@
 import {StringResolvable} from "discord.js";
 
-import repositories from "../repository/Repositories";
-import {camelcase} from "../service/Util";
+import repositories from "../../repository/Repositories";
+import {camelcase} from "../../service/Util";
 const repository = repositories.keystoneRepository();
 
 module.exports = function(args: string[]): StringResolvable {

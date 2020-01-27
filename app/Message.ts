@@ -5,7 +5,7 @@ import {Client, Message, StringResolvable, TextChannel} from "discord.js"
 import {respond, sendMessage} from "./service/Util";
 import PizdaService from "./service/PizdaService";
 import DaService from "./service/DaService";
-import {Command} from "./command/Command";
+import {Command} from "./model/Command";
 import Commands from "./Commands";
 
 module.exports = function(client:Client, message:Message): void {

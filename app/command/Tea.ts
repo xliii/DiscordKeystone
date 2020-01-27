@@ -1,19 +1,19 @@
 import {Command} from "../model/Command";
 import {Message, StringResolvable} from "discord.js";
 
-class Coffee extends Command {
+class Tea extends Command {
 
     public name(): string {
-        return "Coffee";
+        return "Tea";
     }
 
     protected usage(): string {
-        return "/keys coffee";
+        return "/keys tea";
     }
 
     protected noArg(context: Message): Promise<StringResolvable> {
-        return Promise.resolve("IDI NAHUJ");
+        return Promise.resolve("https://i.ytimg.com/vi/755BDwzxv5c/hqdefault.jpg");
     }
 }
 
-export default new Coffee();
+export default new Tea();

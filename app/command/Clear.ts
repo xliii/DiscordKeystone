@@ -13,6 +13,10 @@ class Clear extends Command {
         return "/keys clear";
     }
 
+    clearInput(): boolean {
+        return true;
+    }
+
     protected noArg(context: Message): Promise<StringResolvable> {
         return repository.Clear().then(() => {
             return "Keystones cleared";

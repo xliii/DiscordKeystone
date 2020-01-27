@@ -1,14 +1,15 @@
 import {Command} from "./model/Command";
 import fs = require("fs");
 import path = require("path");
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
+import {CommandResult} from "./CommandResult";
 
-class Commands {
+class CommandProcessor {
     commands: Command[];
 
     constructor() {
         this.commands = [];
-        let self:Commands = this;
+        let self:CommandProcessor = this;
         fs.readdir(path.join(__dirname, 'command'), function(err, files) {
             if (err) {
                 console.error(err);
@@ -37,15 +38,16 @@ class Commands {
         this.commands.push(cmd);
     }
 
-    public process(command: string, args: string[], message: Message): Promise<StringResolvable> {
+    public process(command: string, args: string[], message: Message): Promise<CommandResult> {
         let cmd: Command | undefined = this.commands.filter(cmd => cmd.matches(command)).pop();
         if (cmd) {
             console.log(`Processing command: ${cmd.name()} - ${args}`);
-            return cmd.process(args, message);
+            let clearInput: boolean = cmd.clearInput();
+            return cmd.process(args, message).then(result => new CommandResult(result, clearInput));
         } else {
-            return Promise.resolve(`Unknown command: **${message}**`);
+            return Promise.resolve(new CommandResult(`Unknown command: **${message}**`, false));
         }
     }
 }
 
-export default new Commands();
+export default new CommandProcessor();

@@ -20,6 +20,10 @@ class Add extends Command {
         return "/keys add {character} [dungeon] [key]";
     }
 
+    clearInput(): boolean {
+        return true;
+    }
+
     protected twoArg(arg1: string, arg2: string, context: Message): Promise<StringResolvable> {
         let dungeon: string = arg1;
         let key: number = parseInt(arg2);

@@ -1,10 +1,10 @@
-import {Keystone} from "../model/Keystone";
-import {KeystoneEntry} from "../model/KeystoneEntry";
+import {Keystone} from "../../model/Keystone";
+import {KeystoneEntry} from "../../model/KeystoneEntry";
 import {Message, StringResolvable} from "discord.js";
-import {Character} from "../model/Character";
+import {Character} from "../../model/Character";
 
-import repositories from "../repository/Repositories";
-import {camelcase} from "../service/Util";
+import repositories from "../../repository/Repositories";
+import {camelcase} from "../../service/Util";
 const aliasRepo = repositories.aliasRepository();
 const keystoneRepo = repositories.keystoneRepository();
 const dungeonRepo = repositories.dungeonRepository();

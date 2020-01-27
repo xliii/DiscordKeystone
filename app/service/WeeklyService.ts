@@ -8,7 +8,7 @@ class WeeklyService {
     private affixesRequest: () => Promise<StringResolvable>;
 
     constructor() {
-        this.affixesRequest = require('../command/Affixes');
+        this.affixesRequest = require('../command/old/Affixes');
     }
 
     public weeklyReset(): Promise<StringResolvable> {

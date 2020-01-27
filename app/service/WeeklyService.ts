@@ -2,17 +2,12 @@ import {StringResolvable} from "discord.js";
 
 import repositories from "../repository/Repositories";
 const keystoneRepo = repositories.keystoneRepository();
+import AffixesService from "./AffixesService";
 
 class WeeklyService {
 
-    private affixesRequest: () => Promise<StringResolvable>;
-
-    constructor() {
-        this.affixesRequest = require('../command/old/Affixes');
-    }
-
     public weeklyReset(): Promise<StringResolvable> {
-        return this.affixesRequest().then(affixes => {
+        return AffixesService.getAffixes().then(affixes => {
             return keystoneRepo.Clear().then(() => {
                 return `**New week has started!**\nKeystones have been cleared\nCurrent week affixes: **${affixes}**`;
             });

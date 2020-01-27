@@ -1,4 +1,4 @@
-import {Command} from "./command/Command";
+import {Command} from "./model/Command";
 import fs = require("fs");
 import path = require("path");
 import {Message, StringResolvable} from "discord.js";
@@ -9,7 +9,6 @@ class Commands {
 
     constructor() {
         this.commands = [];
-        console.log('constructor');
 
         let self:Commands = this;
 
@@ -20,15 +19,14 @@ class Commands {
             }
 
             files.forEach(function(file) {
-                console.log(file);
+                console.log('File: ' + file);
                 const commandName = file.split('.')[0];
 
-                console.log(commandName);
-                if (commandName != 'Coffee') {
+                if (['Add', 'Alias', 'List', 'old'].includes(commandName)) {
                     return;
                 }
-
                 import('./command/' + commandName).then(imported => {
+                    console.log('Import: ' + imported + ' ' + commandName);
                     let cmd: Command = imported.default;
                     self.addCommand(cmd);
                 });

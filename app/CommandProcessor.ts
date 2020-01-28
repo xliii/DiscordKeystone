@@ -3,12 +3,16 @@ import fs = require("fs");
 import path = require("path");
 import {Message} from "discord.js";
 import {CommandResult} from "./CommandResult";
+import {FEATURE_DEFAULT} from "./model/Features";
 
 class CommandProcessor {
     commands: Command[];
+    features: string[];
 
     constructor() {
         this.commands = [];
+        this.features = (process.env.FEATURES || '').split(',').map(value => value.trim().toUpperCase());
+        this.features.push(FEATURE_DEFAULT);
         let self:CommandProcessor = this;
         fs.readdir(path.join(__dirname, 'command'), function(err, files) {
             if (err) {
@@ -34,6 +38,10 @@ class CommandProcessor {
     }
 
     private addCommand(cmd: Command): void {
+        if (!this.features.includes(cmd.feature().toUpperCase())) {
+            return;
+        }
+
         console.log(`Registering command: ${cmd.name()}`);
         this.commands.push(cmd);
     }

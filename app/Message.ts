@@ -1,7 +1,5 @@
-import {Client, Message, TextChannel} from "discord.js"
-import {respond, sendMessage} from "./service/Util";
-import PizdaService from "./service/PizdaService";
-import DaService from "./service/DaService";
+import {Client, Message} from "discord.js"
+import {respond} from "./service/Util";
 import CommandProcessor from "./CommandProcessor";
 
 module.exports = function(client:Client, message:Message): void {
@@ -13,15 +11,15 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    if (PizdaService.matches(message)) {
-        sendMessage(message.channel as TextChannel, PizdaService.response(message));
-        return
-    }
-
-    if (DaService.matches(message)) {
-        respond(message, DaService.response(message));
-        return
-    }
+    // if (PizdaService.matches(message)) {
+    //     sendMessage(message.channel as TextChannel, PizdaService.response(message));
+    //     return
+    // }
+    //
+    // if (DaService.matches(message)) {
+    //     respond(message, DaService.response(message));
+    //     return
+    // }
 
     const parts = message.content.split(' ');
     if (parts[0] !== "/keys") {

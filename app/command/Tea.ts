@@ -1,5 +1,6 @@
 import {Command} from "../model/Command";
 import {Message, StringResolvable} from "discord.js";
+import {FEATURE_PHREAKS} from "../model/Features";
 
 class Tea extends Command {
 
@@ -9,6 +10,10 @@ class Tea extends Command {
 
     protected usage(): string {
         return "/keys tea";
+    }
+
+    feature(): string {
+        return FEATURE_PHREAKS;
     }
 
     protected noArg(context: Message): Promise<StringResolvable> {

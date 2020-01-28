@@ -1,4 +1,5 @@
 import {Message, StringResolvable} from "discord.js";
+import {FEATURE_DEFAULT} from "./Features";
 
 export abstract class Command {
 
@@ -35,7 +36,7 @@ export abstract class Command {
     }
 
     public feature(): string {
-        return 'DEFAULT';
+        return FEATURE_DEFAULT;
     }
 
     public clearInput(): boolean {

@@ -1,3 +1,5 @@
+import Ragequit from "./command/Ragequit";
+
 if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
@@ -5,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 import Discord = require("discord.js");
 import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
+import RagequitService from "./service/RagequitService";
 
 const http = require('http');
 const port = process.env.PORT || 3000;
@@ -20,12 +23,14 @@ http.createServer(requestHandler).listen(port);
 const client = new Discord.Client();
 
 const messageHandler = require("./Message");
+const userLeftHandler = require("./handler/UserLeft");
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
 client.on("message", message => messageHandler(client, message));
+client.on("guildMemberRemove", member => userLeftHandler(client, member));
 client.on("error", console.error);
 
 client.login(process.env.BOT_TOKEN).then(() => {
@@ -39,6 +44,7 @@ client.login(process.env.BOT_TOKEN).then(() => {
 
     const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
     const scheduler = new Scheduler(channel);
+    RagequitService.scheduleRagequitCounter();
     scheduler.scheduleWeeklyReset();
 }).catch(err => {
     console.error("Bot could not login", err);

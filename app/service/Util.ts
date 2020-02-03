@@ -5,6 +5,11 @@ export function sendMessage(channel: TextChannel, message: StringResolvable) {
     channel.send(message);
 }
 
+export function announce(client: Client, message: StringResolvable) {
+    const channel: TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
+    sendMessage(channel, message);
+}
+
 export function respond(message: Message, response: StringResolvable) {
     sendMessage(message.channel as TextChannel, response);
 }
@@ -18,7 +23,6 @@ export function processDM(client:Client, message:Message) {
     if (dmChannel.recipient.id == process.env.ADMIN) {
 
         console.log(`${message.author.username} < ${message}`);
-        const channel: TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
-        sendMessage(channel, message.content);
+        announce(client, message.content);
     }
 }

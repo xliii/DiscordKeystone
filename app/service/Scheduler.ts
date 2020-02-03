@@ -16,7 +16,7 @@ export class Scheduler {
         this.weeklyResetJob = scheduleJob("0 10 7 * * 3", () => {
             weeklyService.weeklyReset().then(result => {
                 sendMessage(this.channel, result);
-            })
+            });
         });
     }
 }

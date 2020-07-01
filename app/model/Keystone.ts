@@ -6,8 +6,8 @@ export class Keystone {
 
     constructor(dungeon: Dungeon, key: number) {
         this.dungeon = dungeon;
-        if (key <= 0) {
-            throw 'Keystone level should be positive'
+        if (isNaN(key) || key <= 0) {
+            throw 'Keystone level should be positive number'
         }
         this.key = key;
     }

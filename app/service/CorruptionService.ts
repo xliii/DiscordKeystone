@@ -121,6 +121,9 @@ class CorruptionService {
         let corruption = new Corruption(corruptStr as CorruptionType, level);
         let current = this.rotationIndex();
         let index = this.find(corruption);
+        if (index < 0) {
+            return Promise.resolve('Unknown corruption: ' + corruptStr);
+        }
         let date = this.findDate(current, index);
         let d = ('0' + date.getDate()).slice(-2);
         let m = ('0' + (date.getMonth() + 1)).slice(-2);

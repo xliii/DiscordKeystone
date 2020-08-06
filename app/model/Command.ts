@@ -44,13 +44,23 @@ export abstract class Command {
     }
 
     public process(args: string[], context: Message): Promise<StringResolvable> {
-        switch (args.length) {
-            case 0: return this.noArg(context);
-            case 1: return this.oneArg(args[0], context);
-            case 2: return this.twoArg(args[0], args[1], context);
-            case 3: return this.threeArg(args[0], args[1], args[2], context);
-            case 4: return this.fourArg(args[0], args[1], args[2], args[3], context);
-            default: return this.customArg(args, context);
+        try {
+            switch (args.length) {
+                case 0:
+                    return this.noArg(context);
+                case 1:
+                    return this.oneArg(args[0], context);
+                case 2:
+                    return this.twoArg(args[0], args[1], context);
+                case 3:
+                    return this.threeArg(args[0], args[1], args[2], context);
+                case 4:
+                    return this.fourArg(args[0], args[1], args[2], args[3], context);
+                default:
+                    return this.customArg(args, context);
+            }
+        } catch (e) {
+            return Promise.resolve(e);
         }
     }
 

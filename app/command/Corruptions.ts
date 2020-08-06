@@ -34,6 +34,11 @@ class Corruptions extends Command {
         let lvl = parseInt(level);
         return CorruptionService.findCorruption(corruption, lvl);
     }
+
+    protected threeArg(corruption1: string, corruption2: string, level: string, context: Message): Promise<StringResolvable> {
+        let lvl = parseInt(level);
+        return CorruptionService.findCorruption(corruption1 + ' ' + corruption2, lvl);
+    }
 }
 
 export default new Corruptions();

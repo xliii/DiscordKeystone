@@ -1,27 +1,27 @@
 export enum CorruptionType {
-    SEVERE,
-    VERSATILE,
-    EXPEDIENT,
-    MASTERFUL,
+    SEVERE = "Severe",
+    VERSATILE = "Versatile",
+    EXPEDIENT = "Expedient",
+    MASTERFUL = "Masterful",
 
-    SIPHONER,
-    AVOIDANT,
+    SIPHONER = "Siphoner",
+    AVOIDANT = "Avoidant",
 
-    STRIKETHROUGH,
-    DEADLY_MOMENTUM,
-    HONED_MIND,
-    RACING_PULSE,
-    SURGING_VITALITY,
+    STRIKETHROUGH = "Strikethrough",
+    DEADLY_MOMENTUM = "Deadly Momentum",
+    HONED_MIND = "Honed Mind",
+    RACING_PULSE = "Racing Pulse",
+    SURGING_VITALITY = "Surging Vitality",
 
-    VOID_RITUAL,
-    INEFFABLE_TRUTH,
-    GLIMPSE_OF_CLARITY,
+    VOID_RITUAL = "Void Ritual",
+    INEFFABLE_TRUTH = "Ineffable Truth",
+    GLIMPSE_OF_CLARITY = "Glimpse of Clarity",
 
-    INFINITE_STARS,
-    ECHOING_VOID,
-    TWILIGHT_DEVASTATION,
-    TWISTED_APPENDAGE,
-    GUSHING_WOUND,
+    INFINITE_STARS = "Infinite Stars",
+    ECHOING_VOID = "Echoing Void",
+    TWILIGHT_DEVASTATION = "Twilight Devastation",
+    TWISTED_APPENDAGE = "Twisted Appendage",
+    GUSHING_WOUND = "Gushing Wound"
 
 
 }

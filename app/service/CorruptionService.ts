@@ -84,7 +84,7 @@ class CorruptionService {
     private rotationIndex(): number {
         let day = 1000 * 60 * 60 * 24;
 
-        let start = Date.parse("Jul 14, 2020");
+        let start = Date.UTC(2020, 6, 14);
         let date = new Date();
 
         let diff_ms = date.getTime() - start;
@@ -92,7 +92,48 @@ class CorruptionService {
         let days_passed = diff_ms / day;
         let rotation = Math.floor(days_passed / 3.5);
 
-        return rotation % 7;
+        return rotation % 8;
+    }
+
+    private floorDate(date: Date): Date {
+        let day = 1000 * 60 * 60 * 24;
+
+        let start = Date.UTC(2020, 6, 14);
+        let diff_ms = date.getTime() - start;
+        let days_passed = diff_ms / day;
+        let rotation = Math.floor(days_passed / 3.5);
+        let rounded = new Date(start);
+        rounded.setDate(rounded.getDate() + rotation * 3.5);
+        return rounded;
+    }
+
+    private find(corruption: Corruption) : number {
+        console.log('Find: ' + corruption);
+        for (let i = 0; i < this.ROTATIONS.length; i++) {
+            if (this.ROTATIONS[i].some(e => e.equals(corruption))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public findCorruption(corruptStr: string, level: number): Promise<string> {
+        let corruption = new Corruption(corruptStr as CorruptionType, level);
+        let current = this.rotationIndex();
+        let index = this.find(corruption);
+        let date = this.findDate(current, index);
+        let d = ('0' + date.getDate()).slice(-2);
+        let m = ('0' + (date.getMonth() + 1)).slice(-2);
+        let y = date.getFullYear();
+        return Promise.resolve(`${corruption} will be available on ${d}/${m}/${y}`);
+    }
+
+    private findDate(current: number, index: number): Date {
+        let date = this.floorDate(new Date());
+        let rotationDelta = (index + 8 - current) % 8;
+        let dayDelta = rotationDelta * 3.5;
+        date.setDate(date.getDate() + dayDelta);
+        return date;
     }
 
     public listCorruptions(): Promise<Corruption[]> {

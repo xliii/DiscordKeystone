@@ -12,6 +12,11 @@ class Corruptions extends Command {
         return "/keys corruptions";
     }
 
+
+    protected aliases(): string[] {
+        return ["corrupts", "corrupt", "corruption"];
+    }
+
     clearInput(): boolean {
         return false;
     }
@@ -23,6 +28,11 @@ class Corruptions extends Command {
             result.push(...corruptions);
             return result;
         });
+    }
+
+    protected twoArg(corruption: string, level: string, context: Message): Promise<StringResolvable> {
+        let lvl = parseInt(level);
+        return CorruptionService.findCorruption(corruption, lvl);
     }
 }
 

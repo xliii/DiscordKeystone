@@ -14,11 +14,11 @@ export class Corruption {
     }
 
     public equals(o: Corruption): boolean {
-        return this.corruption === o.corruption && this.level === o.level;
+        return this.corruption == o.corruption && this.level == o.level;
     }
 
     private formatCorruption(): string {
-        let corruption = CorruptionType[this.corruption];
+        let corruption = this.corruption;
         return corruption.split('_').map(v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()).join(' ');
     }
 

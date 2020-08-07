@@ -22,7 +22,7 @@ module.exports = function(client:Client, message:Message): void {
     // }
 
     const parts = message.content.split(' ');
-    if (parts[0] !== "/keys") {
+    if (parts[0].toLowerCase() !== "/keys") {
         return
     }
 

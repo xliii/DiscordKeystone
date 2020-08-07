@@ -9,7 +9,7 @@ class Corruptions extends Command {
     }
 
     protected usage(): string {
-        return "/keys corruptions";
+        return "Usage: /keys corruptions **Corruption** **Level**";
     }
 
 

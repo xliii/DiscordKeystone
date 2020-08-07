@@ -31,13 +31,28 @@ class Corruptions extends Command {
     }
 
     protected twoArg(corruption: string, level: string, context: Message): Promise<StringResolvable> {
-        let lvl = parseInt(level);
+        let lvl = this.parseLevel(level);
         return CorruptionService.findCorruption(corruption, lvl);
     }
 
     protected threeArg(corruption1: string, corruption2: string, level: string, context: Message): Promise<StringResolvable> {
-        let lvl = parseInt(level);
+        let lvl = this.parseLevel(level);
         return CorruptionService.findCorruption(corruption1 + ' ' + corruption2, lvl);
+    }
+
+    private parseLevel(level: string): number {
+         let num = parseInt(level);
+         if (!isNaN(num)) {
+             return num;
+         }
+
+         level = level.toUpperCase();
+         switch (level) {
+             case "I": return 1;
+             case "II": return 2;
+             case "III": return 3;
+             default: throw `Invalid corruption level: ${level}`;
+         }
     }
 }
 

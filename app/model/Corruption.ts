@@ -1,4 +1,5 @@
 import {CorruptionType} from "./CorruptionType";
+import {camelcase} from "../service/Util";
 
 export class Corruption {
 
@@ -17,13 +18,8 @@ export class Corruption {
         return this.corruption == o.corruption && this.level == o.level;
     }
 
-    private formatCorruption(): string {
-        let corruption = this.corruption;
-        return corruption.replace('_', ' ').split(' ').map(v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()).join(' ');
-    }
-
     toString():string {
-        let corruption = this.formatCorruption();
+        let corruption = camelcase(this.corruption);
         let lvl = this.romanLevel();
         return `**${corruption} ${lvl}**`;
     }

@@ -1,5 +1,6 @@
 import {Corruption} from "../model/Corruption";
 import {CorruptionType} from "../model/CorruptionType";
+import {camelcase} from "./Util";
 
 class CorruptionService {
 
@@ -108,7 +109,6 @@ class CorruptionService {
     }
 
     private find(corruption: Corruption) : number {
-        console.log('Find: ' + corruption);
         for (let i = 0; i < this.ROTATIONS.length; i++) {
             if (this.ROTATIONS[i].some(e => e.equals(corruption))) {
                 return i;
@@ -118,7 +118,7 @@ class CorruptionService {
     }
 
     public findCorruption(corruptStr: string, level: number): Promise<string> {
-        let corruption = new Corruption(corruptStr as CorruptionType, level);
+        let corruption = new Corruption(camelcase(corruptStr) as CorruptionType, level);
         let current = this.rotationIndex();
         let index = this.find(corruption);
         if (index < 0) {

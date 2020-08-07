@@ -15,7 +15,7 @@ export function respond(message: Message, response: StringResolvable) {
 }
 
 export function camelcase(str: string) {
-    return str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
+    return str.split(' ').map(v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()).join(' ');
 }
 
 export function processDM(client:Client, message:Message) {

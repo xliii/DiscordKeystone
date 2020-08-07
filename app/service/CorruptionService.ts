@@ -122,7 +122,7 @@ class CorruptionService {
         let current = this.rotationIndex();
         let index = this.find(corruption);
         if (index < 0) {
-            return Promise.resolve('Unknown corruption: ' + corruptStr);
+            return Promise.resolve('Unknown corruption: ' + corruption);
         }
         let date = this.findDate(current, index);
         let d = ('0' + date.getDate()).slice(-2);

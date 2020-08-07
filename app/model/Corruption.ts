@@ -19,7 +19,7 @@ export class Corruption {
 
     private formatCorruption(): string {
         let corruption = this.corruption;
-        return corruption.split('_').map(v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()).join(' ');
+        return corruption.replace('_', ' ').split(' ').map(v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()).join(' ');
     }
 
     toString():string {

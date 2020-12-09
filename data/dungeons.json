@@ -1,81 +1,65 @@
 [
   {
-    "id": 244,
-    "name": "Atal'Dazar",
+    "id": 13309,
+    "name": "De Other Side",
     "aliases": [
-      "AD"
+      "DOS", 
+      "Side"
     ]
   },
   {
-    "id": 245,
-    "name": "Freehold",
+    "id": 13228,
+    "name": "Plaguefall",
     "aliases": [
-      "FH"
+      "PF"
     ]
   },
   {
-    "id": 249,
-    "name": "Kings Rest",
+    "id": 12831,
+    "name": "Halls of Atonement",
     "aliases": [
-      "KR"
+      "HoA", 
+      "Halls"
     ]
   },
   {
-    "id": 247,
-    "name": "Motherlode",
+    "id": 13334,
+    "name": "Mists of Tirna Scithe",
     "aliases": [
-      "ML",
-      "Mother"
+      "MoTS",
+      "Mists"
     ]
   },
   {
-    "id": 252,
-    "name": "Shrine of the Storm",
+    "id": 12842,
+    "name": "Sanguine Depths",
     "aliases": [
-      "SOTS",
-      "Shrine"
+      "SD",
+      "Depths"
     ]
   },
   {
-    "id": 353,
-    "name": "Siege of Boralus",
+    "id": 12837,
+    "name": "Spires of Ascension",
     "aliases": [
-      "SOB",
-      "Siege",
-      "Boralus"
+      "SoA",
+      "Spires"
     ]
   },
   {
-    "id": 250,
-    "name": "Temple of Sethraliss",
+    "id": 12916,
+    "name": "The Necrotic Wake",
     "aliases": [
-      "TOS",
-      "Temple",
-      "Sethraliss"
+      "NW",
+      "Wake"
     ]
   },
   {
-    "id": 246,
-    "name": "Tol Dagor",
+    "id": 12841,
+    "name": "Theater of Pain",
     "aliases": [
-      "TD",
-      "Dagor"
-    ]
-  },
-  {
-    "id": 251,
-    "name": "Underrot",
-    "aliases": [
-      "UR"
-    ]
-  },
-  {
-    "id": 248,
-    "name": "Waycrest Manor",
-    "aliases": [
-      "WM",
-      "Waycrest",
-      "Manor"
+      "ToP",
+      "Theater"
     ]
   }
 ]

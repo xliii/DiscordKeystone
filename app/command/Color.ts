@@ -1,9 +1,8 @@
 import {Command} from "../model/Command";
 import {GuildMember, Message, Role, StringResolvable} from "discord.js";
+import ColorService from "../service/ColorService";
 
 class ColorCmd extends Command {
-
-    private regex = /^(?:[0-9a-fA-F]{3}){1,2}$/gi;
 
     public name(): string {
         return "Color";
@@ -13,38 +12,40 @@ class ColorCmd extends Command {
         return ["**Usage:** /keys color FF0000"];
     }
 
-    private isValid(color: string): boolean {
-        return color.match(this.regex) != null;
-    }
-
-    private assignRole(member: GuildMember, role: Role, cleanupRole?: Role): Promise<StringResolvable> {
+    private assignRole(member: GuildMember, role: Role): Promise<any> {
         console.log("Add role " + role.name + " to " + member.displayName);
-        let roles = [role];
-        return member.addRoles(roles).then(() => {
-            console.log("Role added");
-            if (cleanupRole) {
-                return cleanupRole.delete().then(() => {
-                    return Promise.resolve("Role created and assigned: " + role.name);
-                }).catch(e => console.error(e));
-            } else {
-                return Promise.resolve("Role created and assigned: " + role.name);
-            }
-        }).catch(e => console.error(e));
+        //Retain user's non color roles, then add new role to it
+        let roles = member.roles.map(r => r).filter(r => !ColorService.isValidColor(r.name));
+        roles.unshift(role);
+        return member.addRoles(roles).catch(e => console.error(e));
     }
 
     protected oneArg(color: string, context: Message): Promise<StringResolvable> {
-        if (!this.isValid(color)) {
+        if (color.toLowerCase() == 'list') {
+            let colorRoles = ColorService.listColors(context.guild);
+            if (!colorRoles || colorRoles.length === 0) {
+                return Promise.resolve("No color roles available")
+            } else {
+                colorRoles.unshift(colorRoles.length + " color roles available:")
+                return Promise.resolve(colorRoles);
+            }
+        }
+
+        if (color.toLowerCase() == 'clear') {
+            if (context.author.id == process.env.ADMIN) {
+                return ColorService.clearAllColorRoles(context.guild).then(roles => {
+                    return Promise.resolve(roles.length + " roles removed");
+                })
+            } else {
+                return Promise.resolve("Insufficient permissions");
+            }
+        }
+
+        if (!ColorService.isValidColor(color)) {
             return Promise.resolve("Invalid color format. Use RBG Hex, i.e. FF0000");
         }
 
         color = color.toUpperCase();
-
-        let current_role = context.member.roles.find(r => this.isValid(r.name));
-        if (current_role) {
-            console.log("Found current role: " + current_role.name);
-        }
-
-        let cleanup = current_role && current_role.members.size <= 1;
 
         let new_role = context.guild.roles.find(r => r.name === color);
         if (!new_role) {
@@ -54,10 +55,13 @@ class ColorCmd extends Command {
                 name: color
             }).then(created => {
                 console.log("Role created: assign");
-                return this.assignRole(context.member, created, cleanup ? current_role : undefined);
+                return this.assignRole(context.member, created).then(() => {
+                    return Promise.resolve("Role created and assigned: " + created.name);
+                })
             }).catch(e => console.error(e));
-        } else return this.assignRole(context.member, new_role, cleanup ? current_role : undefined);
-
+        } else return this.assignRole(context.member, new_role).then(() => {
+            return Promise.resolve("Role assigned: " + new_role.name);
+        })
     }
 }
 

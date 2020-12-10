@@ -8,6 +8,7 @@ import Discord = require("discord.js");
 import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
 import RagequitService from "./service/RagequitService";
+import ColorService from "./service/ColorService";
 
 const http = require('http');
 const port = process.env.PORT || 3000;
@@ -45,6 +46,7 @@ client.login(process.env.BOT_TOKEN).then(() => {
     const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
     const scheduler = new Scheduler(channel);
     RagequitService.scheduleRagequitCounter();
+    ColorService.scheduleCleanup(client);
     scheduler.scheduleWeeklyReset();
 }).catch(err => {
     console.error("Bot could not login", err);

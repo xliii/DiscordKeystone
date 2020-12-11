@@ -53,7 +53,7 @@ class CommandProcessor {
             let clearInput: boolean = cmd.clearInput();
             return cmd.process(args, message).then(result => new CommandResult(result, clearInput));
         } else {
-            return Promise.resolve(new CommandResult(`Unknown command: **${message}**`, false));
+            return Promise.resolve(new CommandResult(`Unknown command: **${message.content}**`, false));
         }
     }
 }

@@ -39,7 +39,7 @@ module.exports = function(client:Client, message:Message): void {
     CommandProcessor.process(command, args, message).then(response => {
         respond(message, response.response);
         if (response.clearInput) {
-            message.delete(0).catch(err => {
+            message.delete({timeout: 0}).catch(err => {
                 console.error(err);
             })
         }

@@ -27,7 +27,7 @@ const messageHandler = require("./Message");
 const userLeftHandler = require("./handler/UserLeft");
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}`);
+    console.log(`Logged in as ${client.user?.tag}`);
 });
 
 client.on("message", message => messageHandler(client, message));
@@ -35,19 +35,21 @@ client.on("guildMemberRemove", member => userLeftHandler(client, member));
 client.on("error", console.error);
 
 client.login(process.env.BOT_TOKEN).then(() => {
-    client.user.setPresence({
-        game: {
-            name: "World Of Warcraft",
-            type: "WATCHING"
+    client.user?.setPresence({
+        activity: {
+            name: 'World of Warcraft',
+            type: 'WATCHING'
         },
         status: 'online'
     });
 
-    const channel:TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
-    const scheduler = new Scheduler(channel);
-    RagequitService.scheduleRagequitCounter();
-    ColorService.scheduleCleanup(client);
-    scheduler.scheduleWeeklyReset();
+    client.channels.fetch(process.env.CHANNEL_ID || '').then(channel => {
+        let textChannel = channel as TextChannel;
+        const scheduler = new Scheduler(textChannel);
+        RagequitService.scheduleRagequitCounter();
+        ColorService.scheduleCleanup(client);
+        scheduler.scheduleWeeklyReset();
+    });
 }).catch(err => {
     console.error("Bot could not login", err);
 });

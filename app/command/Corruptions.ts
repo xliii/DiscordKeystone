@@ -1,6 +1,7 @@
 import {Command} from "../model/Command";
 import {Message, StringResolvable} from "discord.js";
 import CorruptionService from "../service/CorruptionService";
+import {FEATURE_LEGACY} from "../model/Features";
 
 class Corruptions extends Command {
 
@@ -19,6 +20,11 @@ class Corruptions extends Command {
 
     clearInput(): boolean {
         return false;
+    }
+
+
+    feature(): string {
+        return FEATURE_LEGACY;
     }
 
     protected noArg(context: Message): Promise<StringResolvable> {

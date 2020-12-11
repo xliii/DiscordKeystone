@@ -17,17 +17,17 @@ class ColorService {
         return color.match(this.regex) != null;
     }
 
-    public listColors(guild: Guild): string[] {
-        return this.getColorRoles(guild).map(r => r.name);
-    }
-
-    private getColorRoles(guild: Guild): Collection<string, Role> {
-        return guild.roles.filter(r => this.isValidColor(r.name));
-    }
-
-    public clearAllColorRoles(guild: Guild): Promise<Role[]> {
-        return this.deleteRoles(this.getColorRoles(guild));
-    }
+    // public listColors(guild: Guild): string[] {
+    //     return this.getColorRoles(guild).map(r => r.name);
+    // }
+    //
+    // private getColorRoles(guild: Guild): Collection<string, Role> {
+    //     return guild.roles.filter(r => this.isValidColor(r.name));
+    // }
+    //
+    // public clearAllColorRoles(guild: Guild): Promise<Role[]> {
+    //     return this.deleteRoles(this.getColorRoles(guild));
+    // }
 
     private deleteRoles(roles: Collection<string, Role>): Promise<Role[]> {
         let promises: Promise<Role>[] = [];
@@ -38,23 +38,30 @@ class ColorService {
     }
 
     private processCleanup(client:Client) {
-        let guild = client.guilds.find(g => g.id === process.env.GUILD_ID);
-        if (guild) {
-            let colorRoles = guild.roles.filter(r => this.isValidColor(r.name));
-            colorRoles.forEach(role => {
-                //console.log(role.name + " -> " + guild.members.filter(m => m.roles.has(role.id)).size);
-            });
-            console.log(guild.name);
-            console.log(guild.memberCount);
+        client.guilds.fetch(process.env.GUILD_ID || '').then(guild => {
+            if (guild) {
+                guild.roles.fetch().then(roles => {
+                    let toCleanup = roles.cache.filter(r => this.isValidColor(r.name));
 
-            guild.fetchMembers().then().then(g => g.members.forEach(member => {
-                console.log(member.displayName + " -> " + member.roles.map(r => r.name));
-            }));
-            // let toCleanup = colorRoles.filter(r => r.members.size == 0);
-            // this.deleteRoles(toCleanup).then(roles => {
-            //     console.log("Cleaned up " + roles.length + " color roles");
-            // });
-        }
+                    guild.members.fetch().then(members => {
+                        members.forEach(member => {
+                            member.roles.cache.forEach(memberRole => {
+                                toCleanup = toCleanup.filter(role => role.name !== memberRole.name);
+                            });
+                        });
+
+                        let msg = `Cleaning up ${toCleanup.size} roles`;
+                        if (toCleanup.size > 0) {
+                            msg += ": " + toCleanup.map(r => r.name);
+                        }
+
+                        console.log(msg);
+
+                        this.deleteRoles(toCleanup).catch(e => console.error(e));
+                    });
+                });
+            }
+        });
     }
 }
 

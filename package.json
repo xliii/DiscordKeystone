@@ -9,11 +9,12 @@
   "dependencies": {
     "@types/node": "^11.11.6",
     "@types/node-schedule": "^1.2.3",
+    "@types/ws": "^7.4.0",
     "axios": "^0.18.0",
     "azure-storage": "^2.10.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "discord.js": "^11.6.4",
+    "discord.js": "^12",
     "dotenv": "^7.0.0",
     "ejs": "~2.5.7",
     "express": "~4.16.0",

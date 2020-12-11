@@ -6,8 +6,10 @@ export function sendMessage(channel: TextChannel, message: StringResolvable) {
 }
 
 export function announce(client: Client, message: StringResolvable) {
-    const channel: TextChannel = client.channels.get(process.env.CHANNEL_ID || '') as TextChannel;
-    sendMessage(channel, message);
+    client.channels.fetch(process.env.CHANNEL_ID || '').then(channel => {
+        let textChannel = channel as TextChannel;
+        sendMessage(textChannel, message);
+    });
 }
 
 export function respond(message: Message, response: StringResolvable) {

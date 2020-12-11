@@ -12,25 +12,36 @@ class ColorCmd extends Command {
         return ["**Usage:** /keys color FF0000"];
     }
 
-    // private assignRole(member: GuildMember, role: Role): Promise<any> {
-    //     console.log("Add role " + role.name + " to " + member.displayName);
-    //     //Retain user's non color roles, then add new role to it
-    //     let roles = member.roles.map(r => r).filter(r => !ColorService.isValidColor(r.name));
-    //     roles.unshift(role);
-    //     return member.addRoles(roles).catch(e => console.error(e));
-    // }
+    private assignRole(member: GuildMember, role: Role): Promise<Role> {
+        console.log("Add role " + role.name + " to " + member.displayName);
+        return member.roles.add(role).then(() => {
+            return Promise.resolve(role);
+        });
+    }
+
+    private clearColorRoles(member: GuildMember): Promise<any> {
+        let colorRoles = member.roles.cache.filter(r => ColorService.isValidColor(r.name));
+        console.log("Clearing " + colorRoles.size + " color roles from " + member.displayName);
+        return member.roles.remove(colorRoles);
+    }
 
     protected oneArg(color: string, context: Message): Promise<StringResolvable> {
         if (!context.guild) {
             return Promise.resolve("Error! Guild wasn't found");
         }
 
+        if (!context.member) {
+            return Promise.resolve("Error! Author user wasn't found");
+        }
+
+        const guild = context.guild;
+
         if (color.toLowerCase() == 'list') {
-            return ColorService.listColors(context.guild).then(colorRoles => {
+            return ColorService.listColors(guild).then(colorRoles => {
                 if (!colorRoles || colorRoles.length === 0) {
                     return "No color roles available";
                 } else {
-                    colorRoles.unshift(colorRoles.length + " color roles available:")
+                    colorRoles.unshift(colorRoles.length + " color roles available:");
                     return colorRoles;
                 }
             })
@@ -39,7 +50,7 @@ class ColorCmd extends Command {
 
         if (color.toLowerCase() == 'clear') {
             if (context.author.id == process.env.ADMIN) {
-                return ColorService.clearAllColorRoles(context.guild).then(roles => {
+                return ColorService.clearAllColorRoles(guild).then(roles => {
                     return Promise.resolve(roles.length + " roles removed");
                 })
             } else {
@@ -53,22 +64,36 @@ class ColorCmd extends Command {
 
         color = color.toUpperCase();
 
-        return Promise.resolve(color);
-        // let new_role = context.guild.roles.find(r => r.name === color);
-        // if (!new_role) {
-        //     console.log("New role doesn't exist - create new role");
-        //     return context.guild.createRole({
-        //         color: color,
-        //         name: color
-        //     }).then(created => {
-        //         console.log("Role created: assign");
-        //         return this.assignRole(context.member, created).then(() => {
-        //             return Promise.resolve("Role created and assigned: " + created.name);
-        //         })
-        //     }).catch(e => console.error(e));
-        // } else return this.assignRole(context.member, new_role).then(() => {
-        //     return Promise.resolve("Role assigned: " + new_role.name);
-        // })
+        return guild.members.fetch(context.author).then(member => {
+            return this.clearColorRoles(member).then(() => {
+                return guild.roles.fetch().then(roles => {
+                    let role = roles.cache.find(r => r.name === color);
+                    if (!role) {
+                        let bot_role = roles.cache.find(r => r.name === "keystone-bot");
+                        if (!bot_role) {
+                            return Promise.resolve("Error! 'keystone-bot' role not found");
+                        }
+                        return guild.roles.create({
+                            data: {
+                                name: color,
+                                color: color,
+                                position: bot_role.position - 1,
+                                mentionable: false
+                            }
+                        }).then(role => {
+                            return this.assignRole(member, role).then(role => {
+                                return Promise.resolve("Role created and assigned: " + role.name);
+                            });
+                        })
+                        //create role
+                    } else {
+                        return this.assignRole(member, role).then(role => {
+                            return Promise.resolve("Role assigned: " + role.name);
+                        });
+                    }
+                });
+            });
+        });
     }
 }
 

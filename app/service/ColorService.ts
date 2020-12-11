@@ -17,17 +17,23 @@ class ColorService {
         return color.match(this.regex) != null;
     }
 
-    // public listColors(guild: Guild): string[] {
-    //     return this.getColorRoles(guild).map(r => r.name);
-    // }
-    //
-    // private getColorRoles(guild: Guild): Collection<string, Role> {
-    //     return guild.roles.filter(r => this.isValidColor(r.name));
-    // }
-    //
-    // public clearAllColorRoles(guild: Guild): Promise<Role[]> {
-    //     return this.deleteRoles(this.getColorRoles(guild));
-    // }
+    public listColors(guild: Guild): Promise<string[]> {
+        return this.getColorRoles(guild).then(roles => {
+            return roles.map(r => r.name);
+        })
+    }
+
+    private getColorRoles(guild: Guild): Promise<Collection<string, Role>> {
+        return guild.roles.fetch().then(roles => {
+            return roles.cache.filter(r => this.isValidColor(r.name));
+        });
+    }
+
+    public clearAllColorRoles(guild: Guild): Promise<Role[]> {
+        return this.getColorRoles(guild).then(roles => {
+            return this.deleteRoles(roles);
+        });
+    }
 
     private deleteRoles(roles: Collection<string, Role>): Promise<Role[]> {
         let promises: Promise<Role>[] = [];

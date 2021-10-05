@@ -1,6 +1,8 @@
 import {Client, Message} from "discord.js"
 import {respond} from "./service/Util";
 import CommandProcessor from "./CommandProcessor";
+import PizdaService from "./service/PizdaService";
+import DaService from "./service/DaService";
 
 module.exports = function(client:Client, message:Message): void {
     if (message.author.id == process.env.BOT_ID) {
@@ -11,15 +13,16 @@ module.exports = function(client:Client, message:Message): void {
         return
     }
 
-    // if (PizdaService.matches(message)) {
-    //     sendMessage(message.channel as TextChannel, PizdaService.response(message));
-    //     return
-    // }
-    //
-    // if (DaService.matches(message)) {
-    //     respond(message, DaService.response(message));
-    //     return
-    // }
+    //TODO: Implement hot feature toggling
+    if (PizdaService.matches(message)) {
+        respond(message, PizdaService.response(message));
+        return
+    }
+
+    if (DaService.matches(message)) {
+        respond(message, DaService.response(message));
+        return
+    }
 
     const parts = message.content.split(' ');
     if (parts[0].toLowerCase() !== "/keys") {

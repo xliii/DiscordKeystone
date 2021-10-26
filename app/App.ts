@@ -1,5 +1,3 @@
-import Ragequit from "./command/Ragequit";
-
 if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
@@ -9,6 +7,7 @@ import {Scheduler} from "./service/Scheduler";
 import {TextChannel} from "discord.js";
 import RagequitService from "./service/RagequitService";
 import ColorService from "./service/ColorService";
+import NekoService from "./service/NekoService";
 
 const http = require('http');
 const port = process.env.PORT || 3000;
@@ -28,6 +27,8 @@ const userLeftHandler = require("./handler/UserLeft");
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user?.tag}`);
+
+    NekoService.getNeko().then(neko => console.log(neko));
 });
 
 client.on("message", message => messageHandler(client, message));

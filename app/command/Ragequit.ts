@@ -3,7 +3,7 @@ import {Message, StringResolvable} from "discord.js";
 import {FEATURE_PHREAKS} from "../model/Features";
 import RagequitService from "../service/RagequitService";
 
-class Tea extends Command {
+class Ragequit extends Command {
 
     public name(): string {
         return "Ragequit";
@@ -29,4 +29,4 @@ class Tea extends Command {
     }
 }
 
-export default new Tea();
+export default new Ragequit();

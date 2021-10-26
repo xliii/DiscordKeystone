@@ -3,6 +3,7 @@ import {respond} from "./service/Util";
 import CommandProcessor from "./CommandProcessor";
 import PizdaService from "./service/PizdaService";
 import DaService from "./service/DaService";
+import NekoService from "./service/NekoService";
 
 module.exports = function(client:Client, message:Message): void {
     if (message.author.id == process.env.BOT_ID) {
@@ -11,6 +12,11 @@ module.exports = function(client:Client, message:Message): void {
 
     if (message.guild && message.guild.id !== process.env.GUILD_ID) {
         return
+    }
+
+    if (NekoService.matches(message)) {
+        NekoService.getNeko().then(neko => respond(message, neko));
+        return;
     }
 
     //TODO: Implement hot feature toggling
@@ -40,6 +46,7 @@ module.exports = function(client:Client, message:Message): void {
     const args = parts.slice(2);
 
     CommandProcessor.process(command, args, message).then(response => {
+        console.log(response.response);
         respond(message, response.response);
         if (response.clearInput) {
             message.delete({timeout: 0}).catch(err => {

@@ -1,19 +1,24 @@
-import {Client, DMChannel, Message, StringResolvable, TextChannel} from "discord.js";
+import {Client, DMChannel, Message, TextChannel, Channel, TextBasedChannels} from "discord.js";
 
-export function sendMessage(channel: TextChannel, message: StringResolvable) {
-    console.log(`${channel.name} > ${message}`);
-    channel.send(message);
+export function sendMessage(channel: TextBasedChannels | Channel, message: any) {
+    const textChannel: TextChannel = channel as TextChannel;
+    console.log(`${textChannel} > ${message}`);
+
+    // @ts-ignore
+    textChannel.send(message);
 }
 
-export function announce(client: Client, message: StringResolvable) {
+export function announce(client: Client, message: any) {
     client.channels.fetch(process.env.CHANNEL_ID || '').then(channel => {
-        let textChannel = channel as TextChannel;
-        sendMessage(textChannel, message);
+        if (!channel) {
+            return;
+        }
+        sendMessage(channel as unknown as TextBasedChannels, message);
     });
 }
 
-export function respond(message: Message, response: StringResolvable) {
-    sendMessage(message.channel as TextChannel, response);
+export function respond(message: Message, response: any) {
+    sendMessage(message.channel, response);
 }
 
 export function camelcase(str: string) {

@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import {RioService} from "../service/RioService";
 import {AliasService} from "../service/AliasService";
 
@@ -13,7 +13,7 @@ class Rio extends Command {
         return "/keys rio [character]";
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         const aliasService = new AliasService();
         return aliasService.extractAlias(context).then(alias => {
             return this.getRio(alias);
@@ -21,7 +21,7 @@ class Rio extends Command {
     }
 
 
-    protected oneArg(arg1: string, context: Message): Promise<StringResolvable> {
+    protected oneArg(arg1: string, context: Message): Promise<any> {
         return Promise.resolve(this.getRio(arg1));
     }
 

@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import FilterService from "../service/FilterService";
 import repositories from "../repository/Repositories";
 import {KeystoneEntry} from "../model/KeystoneEntry";
@@ -16,7 +16,7 @@ class List extends Command {
         return "/keys list {filter}";
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return repository.List().then(keystones => {
             if (keystones.length == 0) {
                 return "No keystones available";
@@ -30,7 +30,7 @@ class List extends Command {
         });
     }
 
-    protected oneArg(filter: string, context: Message): Promise<StringResolvable> {
+    protected oneArg(filter: string, context: Message): Promise<any> {
         return repository.List().then(keystones => {
             if (keystones.length == 0) {
                 return "No keystones available";

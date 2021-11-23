@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import AffixesService from "../service/AffixesService";
 
 class Affixes extends Command {
@@ -12,7 +12,7 @@ class Affixes extends Command {
         return "/keys affixes";
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return AffixesService.getAffixes();
     }
 }

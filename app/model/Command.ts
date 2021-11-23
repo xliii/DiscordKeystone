@@ -1,4 +1,4 @@
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import {FEATURE_DEFAULT} from "./Features";
 
 export abstract class Command {
@@ -9,29 +9,29 @@ export abstract class Command {
 
     public abstract name(): string;
 
-    protected abstract usage(): StringResolvable;
+    protected abstract usage(): any;
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
-    protected oneArg(arg1: string, context: Message): Promise<StringResolvable> {
+    protected oneArg(arg1: string, context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
-    protected twoArg(arg1: string, arg2: string, context: Message): Promise<StringResolvable> {
+    protected twoArg(arg1: string, arg2: string, context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
-    protected threeArg(arg1: string, arg2: string, arg3: string, context: Message): Promise<StringResolvable> {
+    protected threeArg(arg1: string, arg2: string, arg3: string, context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
-    protected fourArg(arg1: string, arg2: string, arg3: string, arg4: string, context: Message): Promise<StringResolvable> {
+    protected fourArg(arg1: string, arg2: string, arg3: string, arg4: string, context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
-    protected customArg(args: string[], context: Message): Promise<StringResolvable> {
+    protected customArg(args: string[], context: Message): Promise<any> {
         return Promise.resolve(this.usage());
     }
 
@@ -43,7 +43,7 @@ export abstract class Command {
         return false;
     }
 
-    public process(args: string[], context: Message): Promise<StringResolvable> {
+    public process(args: string[], context: Message): Promise<any> {
         try {
             switch (args.length) {
                 case 0:

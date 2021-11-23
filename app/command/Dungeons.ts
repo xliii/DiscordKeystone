@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import repositories from "../repository/Repositories";
 const repository = repositories.dungeonRepository();
 
@@ -13,7 +13,7 @@ class Dungeons extends Command {
         return "/keys dungeons";
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return repository.List().then(dungeons => {
             return "Available dungeons: \n" + dungeons
                 .map(function(dungeon) {

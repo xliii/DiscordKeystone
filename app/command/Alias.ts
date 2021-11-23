@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import {camelcase} from "../service/Util";
 import repositories from "../repository/Repositories";
 import {Keystone} from "../model/Keystone";
@@ -23,7 +23,7 @@ class AliasCmd extends Command {
                 "/keys alias remove"];
     }
 
-    protected twoArg(option: string, character: string, context: Message): Promise<StringResolvable> {
+    protected twoArg(option: string, character: string, context: Message): Promise<any> {
         if (option === 'set') {
             return this.set(character, context);
         } else {
@@ -31,7 +31,7 @@ class AliasCmd extends Command {
         }
     }
 
-    protected oneArg(option: string, context: Message): Promise<StringResolvable> {
+    protected oneArg(option: string, context: Message): Promise<any> {
         switch (option) {
             case 'get': return this.get(context);
             case 'remove': return this.remove(context);
@@ -40,14 +40,14 @@ class AliasCmd extends Command {
         }
     }
 
-    private get(context: Message): Promise<StringResolvable> {
+    private get(context: Message): Promise<any> {
         let service = new AliasService();
         return service.extractAlias(context).then(character => {
             return `**${context.author.username}**'s alias is **${character}**`;
         })
     }
 
-    private list(): Promise<StringResolvable> {
+    private list(): Promise<any> {
         return repository.List().then(aliases => {
             return aliases.length > 0 ?
                 aliases :
@@ -55,7 +55,7 @@ class AliasCmd extends Command {
         });
     }
 
-    private remove(message: Message): Promise<StringResolvable> {
+    private remove(message: Message): Promise<any> {
         const discordId: string = message.author.id;
         const discordName: string = message.author.username;
         return repository.Remove(discordId).then(alias => {
@@ -65,7 +65,7 @@ class AliasCmd extends Command {
         })
     }
 
-    private set(character: string, context: Message): Promise<StringResolvable> {
+    private set(character: string, context: Message): Promise<any> {
         const discordId: string = context.author.id;
         const discordName: string = context.author.username;
         character = camelcase(character);

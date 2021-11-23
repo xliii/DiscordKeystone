@@ -49,7 +49,7 @@ module.exports = function(client:Client, message:Message): void {
         console.log(response.response);
         respond(message, response.response);
         if (response.clearInput) {
-            message.delete({timeout: 0}).catch(err => {
+            message.delete().catch(err => {
                 console.error(err);
             })
         }

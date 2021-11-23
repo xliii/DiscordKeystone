@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import {FEATURE_PHREAKS} from "../model/Features";
 
 class Coffee extends Command {
@@ -16,7 +16,7 @@ class Coffee extends Command {
         return FEATURE_PHREAKS;
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return Promise.resolve("IDI NAHUJ");
     }
 }

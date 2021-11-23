@@ -1,14 +1,14 @@
 import {Job, scheduleJob} from "node-schedule";
-import {TextChannel} from "discord.js";
+import {Channel} from "discord.js";
 import weeklyService from "./WeeklyService";
 import {sendMessage} from "./Util";
 
 export class Scheduler {
 
     private weeklyResetJob?: Job;
-    private channel: TextChannel;
+    private channel: Channel;
 
-    constructor(channel:TextChannel) {
+    constructor(channel:Channel) {
         this.channel = channel;
     }
 

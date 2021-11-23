@@ -1,5 +1,5 @@
 import {Command} from "../model/Command";
-import {Message, StringResolvable} from "discord.js";
+import {Message} from "discord.js";
 import NekoService from "../service/NekoService";
 
 class Neko extends Command {
@@ -12,7 +12,7 @@ class Neko extends Command {
         return "/keys neko";
     }
 
-    protected noArg(context: Message): Promise<StringResolvable> {
+    protected noArg(context: Message): Promise<any> {
         return NekoService.getNeko();
     }
 }

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "register": "tsc && node ./build/register_command/RegisterCommandTest.js",
+    "registerCommands": "tsc && node ./build/register_command/RegisterCommands.js",
+    "deleteCommands": "tsc && node ./build/register_command/DeleteCommands.js",
     "start": "tsc && node ./build/App.js"
   },
   "dependencies": {

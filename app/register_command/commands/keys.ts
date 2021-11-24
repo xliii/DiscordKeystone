@@ -2,7 +2,13 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const data = new SlashCommandBuilder()
     .setName('keys')
-    .setDescription('Keys test command update')
-    .toJSON();
+    .setDescription('Keystone-bot root command')
+    .addSubcommand((subcommand: any) => {
+        return subcommand
+            .setName('list')
+            .setDescription('List keystones')
+    });
 
-export default data;
+console.log(data);
+
+export default data.toJSON();

@@ -20,28 +20,22 @@ const requestHandler = (request: any, response: any) => {
 http.createServer(requestHandler).listen(port);
 
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS]
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
 const messageHandler = require("./Message");
 const userLeftHandler = require("./handler/UserLeft");
+const interactionHandler = require("./Interactions");
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user?.tag}`);
 });
 
-client.on("message", message => messageHandler(client, message));
+client.on("messageCreate", message => messageHandler(client, message));
 client.on("guildMemberRemove", member => userLeftHandler(client, member));
 client.on("error", console.error);
-client.on('interactionCreate', async interaction => {
-    console.log(interaction);
-    if (!interaction.isCommand()) return;
-
-    const { commandName } = interaction;
-
-    console.log(commandName);
-    await interaction.reply(commandName);
-});
+client.on('interactionCreate', interaction => interactionHandler(interaction));
 
 client.login(process.env.BOT_TOKEN).then(() => {
     client.channels.fetch(process.env.CHANNEL_ID || '').then(channel => {

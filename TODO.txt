@@ -1,5 +1,4 @@
 Commands:
-Clear
 Affixes
 Color
 Remove

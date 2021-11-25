@@ -5,9 +5,15 @@ const data = new SlashCommandBuilder()
     .setDescription('Keystone-bot root command')
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('clear')
+            .setDescription('Clear all keystones')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('list')
             .setDescription('List all keystones')
-    }).addSubcommand((subcommand: any) => {
+    })
+    .addSubcommand((subcommand: any) => {
         return subcommand
             .setName('add')
             .setDescription('Add keystone')
@@ -32,7 +38,8 @@ const data = new SlashCommandBuilder()
                     .setRequired(true)
 
             })
-    }).addSubcommandGroup((subcommandGroup: any) => {
+    })
+    .addSubcommandGroup((subcommandGroup: any) => {
         return subcommandGroup
             .setName('alias')
             .setDescription('Manage aliases')

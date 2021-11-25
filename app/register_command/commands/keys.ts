@@ -6,7 +6,7 @@ const data = new SlashCommandBuilder()
     .addSubcommand((subcommand: any) => {
         return subcommand
             .setName('list')
-            .setDescription('List keystones')
+            .setDescription('List all keystones')
     }).addSubcommand((subcommand: any) => {
         return subcommand
             .setName('add')
@@ -39,7 +39,29 @@ const data = new SlashCommandBuilder()
             .addSubcommand((subcommand: any) => {
                 return subcommand
                     .setName('list')
-                    .setDescription('List aliases')
+                    .setDescription('List all aliases')
             })
+            .addSubcommand((subcommand: any) => {
+                return subcommand
+                    .setName('get')
+                    .setDescription('Get your alias')
+            })
+            .addSubcommand((subcommand: any) => {
+                return subcommand
+                    .setName('remove')
+                    .setDescription('Remove your alias')
+            })
+            .addSubcommand((subcommand: any) => {
+                return subcommand
+                    .setName('set')
+                    .setDescription('Set your alias')
+                    .addStringOption((option: any) => {
+                        return option
+                            .setName('character')
+                            .setDescription('Character Name')
+                            .setRequired(true)
+                    })
+            })
+
     });
 export default data.toJSON();

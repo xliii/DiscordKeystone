@@ -19,7 +19,6 @@ function processResponse(options: any, user: any): Promise<any> {
 }
 
 module.exports = function (interaction: Interaction): void {
-    console.log(interaction);
     if (!interaction.isCommand()) return;
 
     const {commandName, options, user} = interaction;
@@ -27,7 +26,6 @@ module.exports = function (interaction: Interaction): void {
     if (commandName != 'keys') return;
 
     processResponse(options, user).then(response => {
-        console.log(response);
         return interaction.reply(response);
     }).then(result => {
         console.log(result);

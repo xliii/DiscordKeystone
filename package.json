@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "registerCommands": "tsc && node ./build/register_command/RegisterCommands.js",
-    "deleteCommands": "tsc && node ./build/register_command/DeleteCommands.js",
-    "start": "tsc && node ./build/App.js"
+    "clean": "rmdir /s /q build",
+    "registerCommands": "npm run clean || npm run build && node ./build/register_command/RegisterCommands.js",
+    "deleteCommands": "npm run clean || npm run build && node ./build/register_command/DeleteCommands.js",
+    "start": "npm run clean || npm run build && node ./build/App.js",
+    "build": "tsc"
   },
   "dependencies": {
     "@discordjs/builders": "^0.8.2",

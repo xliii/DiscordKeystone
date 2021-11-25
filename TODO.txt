@@ -2,6 +2,7 @@ Commands:
 Color
 Dungeons
 Neko
+Ragequit
 
 
 -----------------------

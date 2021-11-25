@@ -42,6 +42,11 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('dungeons')
+            .setDescription('List available dungeons')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('add')
             .setDescription('Add keystone')
             .addStringOption((option: any) => {

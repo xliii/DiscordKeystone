@@ -8,6 +8,16 @@ const aliasRepo = repositories.aliasRepository();
 const keystoneRepo = repositories.keystoneRepository();
 const dungeonRepo = repositories.dungeonRepository();
 
+function dungeons(options: any, user: any): Promise<any> {
+    return dungeonRepo.List().then(dungeons => {
+        return "Available dungeons: \n" + dungeons
+            .map(function(dungeon) {
+                return "● " + dungeon
+            })
+            .join('\n');
+    });
+}
+
 function add(options: any, user: any): Promise<any> {
     const dungeon = options.getString('dungeon');
     const level = options.getInteger('level');
@@ -63,6 +73,8 @@ function list(options: any, user: any): Promise<any> {
 module.exports = function processCommand(options: any, user: any): Promise<any> {
     const command = options.getSubcommand();
     switch (command) {
+        case 'dungeons':
+            return dungeons(options, user);
         case 'remove':
             return remove(options, user);
         case 'clear':

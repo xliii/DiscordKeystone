@@ -31,6 +31,16 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('neko')
+            .setDescription('Have a catgirl')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
+            .setName('ragequit')
+            .setDescription('It is probably Gusev')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('affixes')
             .setDescription('List current week affixes')
     })

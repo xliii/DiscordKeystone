@@ -21,6 +21,11 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('affixes')
+            .setDescription('List current week affixes')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('list')
             .setDescription('List all keystones')
     })

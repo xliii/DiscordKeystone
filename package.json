@@ -6,7 +6,8 @@
     "clean": "rmdir /s /q build || exit 0",
     "registerCommands": "npm run clean && npm run build && node ./build/register_command/RegisterCommands.js",
     "deleteCommands": "npm run clean && npm run build && node ./build/register_command/DeleteCommands.js",
-    "start": "npm run clean && npm run build && node ./build/App.js",
+    "start_dev": "npm run clean && npm run build && node ./build/App.js",
+    "start": "npm run build && node ./build/App.js",
     "build": "tsc"
   },
   "dependencies": {

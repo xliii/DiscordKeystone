@@ -12,7 +12,7 @@ function registerCommand() {
 
 // Place your client and guild ids here
     const clientId = '558257059276128257';
-    const guildId = '327478651337834496';
+    const guildId = '493732138169008129';
 
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);

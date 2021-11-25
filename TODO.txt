@@ -1,10 +1,7 @@
 Commands:
-Affixes
 Color
 Dungeons
 Neko
-Resist
-Rio
 Roll
 
 

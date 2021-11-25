@@ -1,7 +1,7 @@
 import {Interaction} from "discord.js"
 
-const processKeystones = require("./modules/Keystones");
 const processAlias = require("./modules/Alias");
+const processGeneral = require("./modules/General");
 
 function processResponse(options: any, user: any): Promise<any> {
     const group = options.getSubcommandGroup(false);
@@ -13,7 +13,7 @@ function processResponse(options: any, user: any): Promise<any> {
             return processAlias(options, user);
         }
         default: {
-            return processKeystones(options, user);
+            return processGeneral(options, user);
         }
     }
 }

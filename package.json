@@ -15,7 +15,7 @@
     "@discordjs/rest": "0.1.0-canary.0",
     "@types/node-schedule": "^1.2.3",
     "@types/ws": "^7.4.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "azure-storage": "^2.10.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",

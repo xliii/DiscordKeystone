@@ -2,7 +2,6 @@ Commands:
 Color
 Dungeons
 Neko
-Roll
 
 
 -----------------------

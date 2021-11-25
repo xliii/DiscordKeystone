@@ -26,6 +26,17 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('roll')
+            .setDescription('Roll a dice')
+            .addIntegerOption((option: any) => {
+                return option
+                    .setName('to')
+                    .setDescription('Upper bound (included)')
+                    .setRequired(false)
+            })
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('list')
             .setDescription('List all keystones')
     })

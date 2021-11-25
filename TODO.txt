@@ -1,5 +1,4 @@
 Commands:
-Alias - IN PROGRESS
 Clear
 Affixes
 Color

@@ -7,7 +7,7 @@ const aliasRepo = repositories.aliasRepository();
 const keystoneRepo = repositories.keystoneRepository();
 const dungeonRepo = repositories.dungeonRepository();
 
-function processAdd(options: any, user: any): Promise<any> {
+function add(options: any, user: any): Promise<any> {
     const dungeon = options.getString('dungeon');
     const level = options.getInteger('level');
     const userId = user.id;
@@ -27,8 +27,13 @@ function addKeystone(character: string, dungeonName: string, key: number): Promi
     });
 }
 
+function clear(options: any, user: any): Promise<any> {
+    return keystoneRepo.Clear().then(() => {
+        return "Keystones cleared";
+    });
+}
 
-function processList(options: any, user: any): Promise<any> {
+function list(options: any, user: any): Promise<any> {
     return keystoneRepo.List().then(keystones => {
         if (keystones.length == 0) {
             return "No keystones available";
@@ -47,10 +52,12 @@ function processList(options: any, user: any): Promise<any> {
 module.exports = function processCommand(options: any, user: any): Promise<any> {
     const command = options.getSubcommand();
     switch (command) {
+        case 'clear':
+            return clear(options, user);
         case 'list':
-            return processList(options, user);
+            return list(options, user);
         case 'add':
-            return processAdd(options, user);
+            return add(options, user);
         default:
             return Promise.resolve('Unknown command');
     }

@@ -32,5 +32,14 @@ const data = new SlashCommandBuilder()
                     .setRequired(true)
 
             })
+    }).addSubcommandGroup((subcommandGroup: any) => {
+        return subcommandGroup
+            .setName('alias')
+            .setDescription('Manage aliases')
+            .addSubcommand((subcommand: any) => {
+                return subcommand
+                    .setName('list')
+                    .setDescription('List aliases')
+            })
     });
 export default data.toJSON();

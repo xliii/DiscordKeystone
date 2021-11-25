@@ -8,6 +8,13 @@ const aliasRepo = repositories.aliasRepository();
 const keystoneRepo = repositories.keystoneRepository();
 const dungeonRepo = repositories.dungeonRepository();
 
+function processAliasList(options: any, user: any): Promise<any> {
+    return aliasRepo.List().then(aliases => {
+        return aliases.length > 0 ?
+            aliases.join('\n') :
+            "No aliases available";
+    });
+}
 
 function processAdd(options: any, user: any): Promise<any> {
     const dungeon = options.getString('dungeon');
@@ -19,7 +26,7 @@ function processAdd(options: any, user: any): Promise<any> {
     });
 }
 
-function addKeystone(character:string, dungeonName:string, key:number): Promise<any> {
+function addKeystone(character: string, dungeonName: string, key: number): Promise<any> {
     return dungeonRepo.GetByName(dungeonName).then(dungeon => {
         const keystone: Keystone = new Keystone(dungeon, key);
         const entry: KeystoneEntry = new KeystoneEntry(new Character(character), keystone, new Date().getTime());
@@ -35,25 +42,42 @@ function processList(options: any, user: any): Promise<any> {
             return "No keystones available";
         }
 
-        let result = [];
-        result.push('All keystones:');
-        result.push(...keystones);
+        let result = "";
+        result += 'All keystones:';
+        keystones.forEach(keystone => {
+            result += ('\n' + keystone)
+        });
+        console.log(result);
         return result;
     });
 }
 
 function processResponse(options: any, user: any): Promise<any> {
-    switch (options.getSubcommand()) {
-        case 'list': {
-            return processList(options, user);
-        }
-        case 'add': {
-            return processAdd(options, user);
+    const group = options.getSubcommandGroup(false);
+    const command = options.getSubcommand();
+    console.log("Group: " + group);
+    console.log("Command: " + command);
+    switch (group) {
+        case 'alias': {
+            switch (command) {
+                case 'list':
+                    return processAliasList(options, user);
+                default:
+                    return Promise.resolve('Unknown command');
+            }
         }
         default: {
-            return Promise.resolve('Unknown command');
+            switch (command) {
+                case 'list':
+                    return processList(options, user);
+                case 'add':
+                    return processAdd(options, user);
+                default:
+                    return Promise.resolve('Unknown command');
+            }
         }
     }
+
 }
 
 module.exports = function (interaction: Interaction): void {
@@ -65,6 +89,7 @@ module.exports = function (interaction: Interaction): void {
     if (commandName != 'keys') return;
 
     processResponse(options, user).then(response => {
+        console.log(response);
         return interaction.reply(response);
     }).then(result => {
         console.log(result);

@@ -5,6 +5,17 @@ const data = new SlashCommandBuilder()
     .setDescription('Keystone-bot root command')
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('remove')
+            .setDescription('Remove a keystone')
+            .addStringOption((option: any) => {
+                return option
+                    .setName('character')
+                    .setDescription('Character name')
+                    .setRequired(true)
+            })
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('clear')
             .setDescription('Clear all keystones')
     })
@@ -34,7 +45,7 @@ const data = new SlashCommandBuilder()
             .addIntegerOption((option: any) => {
                 return option
                     .setName('level')
-                    .setDescription('Keystone Level')
+                    .setDescription('Keystone level')
                     .setRequired(true)
 
             })
@@ -65,7 +76,7 @@ const data = new SlashCommandBuilder()
                     .addStringOption((option: any) => {
                         return option
                             .setName('character')
-                            .setDescription('Character Name')
+                            .setDescription('Character name')
                             .setRequired(true)
                     })
             })

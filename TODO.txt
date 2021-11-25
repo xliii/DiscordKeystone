@@ -1,10 +1,13 @@
 Commands:
 Affixes
 Color
-Remove
 Dungeons
 Neko
-Remove
 Resist
 Rio
 Roll
+
+
+-----------------------
+
+Update /keys remove character options when someone adds a keystone

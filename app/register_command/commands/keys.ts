@@ -21,6 +21,16 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('tea')
+            .setDescription('To all the connoisseurs')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
+            .setName('coffee')
+            .setDescription('Imagine drinking coffee')
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('affixes')
             .setDescription('List current week affixes')
     })

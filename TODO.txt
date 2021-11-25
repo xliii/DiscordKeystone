@@ -1,0 +1,12 @@
+Commands:
+Alias - IN PROGRESS
+Clear
+Affixes
+Color
+Remove
+Dungeons
+Neko
+Remove
+Resist
+Rio
+Roll

@@ -48,7 +48,9 @@ function remove(options: any, user: any): Promise<any> {
     })
 }
 
-module.exports = function processCommand(options: any, user: any): Promise<any> {
+module.exports = function processCommand(interaction: any): Promise<any> {
+    const options = interaction.options;
+    const user = interaction.user;
     const command = options.getSubcommand();
     switch (command) {
         case 'list':

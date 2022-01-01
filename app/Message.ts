@@ -1,6 +1,5 @@
 import {Client, Message} from "discord.js"
 import {respond} from "./service/Util";
-import CommandProcessor from "./CommandProcessor";
 import PizdaService from "./service/PizdaService";
 import DaService from "./service/DaService";
 import NekoService from "./service/NekoService";
@@ -40,22 +39,9 @@ module.exports = function(client:Client, message:Message): void {
     if (parts.length < 2) {
         respond(message, `Please specify command: **${message} [command]**`);
         return;
+    } else {
+        respond(message, "Old commands are disabled");
     }
-
-    const command = parts[1];
-    const args = parts.slice(2);
-
-    CommandProcessor.process(command, args, message).then(response => {
-        console.log(response.response);
-        respond(message, response.response);
-        if (response.clearInput) {
-            message.delete().catch(err => {
-                console.error(err);
-            })
-        }
-    }).catch(error => {
-        respond(message, error);
-    });
 };
 
 function logInput(message: Message) {

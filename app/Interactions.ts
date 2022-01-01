@@ -3,17 +3,18 @@ import {Interaction} from "discord.js"
 const processAlias = require("./modules/Alias");
 const processGeneral = require("./modules/General");
 
-function processResponse(options: any, user: any): Promise<any> {
+function processResponse(interaction: any): Promise<any> {
+    const options = interaction.options;
     const group = options.getSubcommandGroup(false);
     const command = options.getSubcommand();
     console.log("Group: " + group);
     console.log("Command: " + command);
     switch (group) {
         case 'alias': {
-            return processAlias(options, user);
+            return processAlias(interaction);
         }
         default: {
-            return processGeneral(options, user);
+            return processGeneral(interaction);
         }
     }
 }
@@ -25,7 +26,7 @@ module.exports = function (interaction: Interaction): void {
 
     if (commandName != 'keys') return;
 
-    processResponse(options, user).then(response => {
+    processResponse(interaction).then(response => {
         return interaction.reply(response);
     }).then(result => {
         console.log(result);

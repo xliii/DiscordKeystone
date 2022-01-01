@@ -1,6 +1,7 @@
 const processKeystones = require("./Keystones");
 const processRoll = require("./Roll");
 const processAffixes = require("./Affixes");
+const processColor = require("./Color");
 
 import RagequitService from "../service/RagequitService";
 import NekoService from "../service/NekoService";
@@ -24,9 +25,13 @@ function neko(): Promise<any> {
     return NekoService.getNeko();
 }
 
-module.exports = function processCommand(options: any, user: any): Promise<any> {
+module.exports = function processCommand(interaction: any): Promise<any> {
+    const options = interaction.options;
+    const user = interaction.user;
     const command = options.getSubcommand();
     switch (command) {
+        case 'color':
+            return processColor(interaction);
         case 'neko':
             return neko();
         case 'ragequit':

@@ -16,6 +16,17 @@ const data = new SlashCommandBuilder()
     })
     .addSubcommand((subcommand: any) => {
         return subcommand
+            .setName('color')
+            .setDescription('Manage color')
+            .addStringOption((option: any) => {
+                return option
+                    .setName('color')
+                    .setDescription('color in hex format: RRGGBB')
+                    .setRequired(true)
+            })
+    })
+    .addSubcommand((subcommand: any) => {
+        return subcommand
             .setName('clear')
             .setDescription('Clear all keystones')
     })
@@ -121,6 +132,5 @@ const data = new SlashCommandBuilder()
                             .setRequired(true)
                     })
             })
-
     });
 export default data.toJSON();

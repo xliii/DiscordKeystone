@@ -61,5 +61,21 @@
       "ToP",
       "Theater"
     ]
+  },
+  {
+    "id": 12850,
+    "name": "Tazavesh: Streets of Wonder",
+    "aliases": [
+      "TSW",
+      "Lower Tazavesh"
+    ]
+  },
+  {
+    "id": 12851,
+    "name": "Tazavesh: So'leah's Gambit",
+    "aliases": [
+      "TSG",
+      "Upper Tazavesh"
+    ]
   }
 ]

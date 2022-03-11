@@ -93,6 +93,8 @@ const data = new SlashCommandBuilder()
                     .addChoice('Sanguine Depths', 'sd')
                     .addChoice('Spires of Ascension', 'soa')
                     .addChoice('Theater of Pain', 'top')
+                    .addChoice('Tazavesh: Streets of Wonder', 'tsw')
+                    .addChoice("Tazavesh: So'leah's Gambit", 'tsg')
             })
             .addIntegerOption((option: any) => {
                 return option
